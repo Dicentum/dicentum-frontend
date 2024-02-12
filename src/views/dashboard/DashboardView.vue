@@ -5,8 +5,8 @@ export default {
   data() {
     return {
       username: this.$store.state.username,
-      groupName: '', // Añade esto
-      groupService: null // Añade esto
+      groupName: '',
+      groupService: null
     };
   },
   created(){
@@ -28,8 +28,7 @@ export default {
 
 <template>
   <h1>Dashboard</h1>
-  <p>Dashboard content goes here</p>
-  {{ username }}
+  <p>Dashboard content goes here for {{ username }}</p>
 
  <div v-for="group in groupName">{{  group.name }}</div>
 </template>
