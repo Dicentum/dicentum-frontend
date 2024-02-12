@@ -6,18 +6,25 @@ const store = createStore({
     state: {
         auth: null,
         username: null,
+        email: null,
+        userRole: null,
         loggedIn: false
     },
     mutations: {
         setAuth(state, auth) {
             state.auth = auth;
         },
-        logIn(state, username){
+        logIn(state, { username, email, userRole }) {
             state.loggedIn = true;
             state.username = username;
+            state.email = email;
+            state.userRole = userRole;
         },
-        logOut(state){
+        logOut(state) {
             state.loggedIn = false;
+            state.username = null;
+            state.email = null;
+            state.userRole = null;
         },
     },
     actions: {
@@ -29,14 +36,20 @@ const store = createStore({
                 console.error('Error fetching user profile:', error.message);
             }
         },
-        logIn({commit}, username){
-            commit("logIn", username);
+        logIn({ commit }, { username, email, userRole }) {
+            commit('logIn', { username, email, userRole });
         }
     },
     getters: {
         getAuth(state) {
             return state.auth;
-        }
+        },
+        getEmail(state) {
+            return state.email;
+        },
+        getUserRole(state) {
+            return state.userRole;
+        },
     }
 });
 
