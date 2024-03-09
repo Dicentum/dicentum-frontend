@@ -5,6 +5,9 @@ import LoginView from '@/views/auth/LoginView.vue'
 import RegisterView from "@/views/auth/RegisterView.vue";
 import DashboardView from "@/views/dashboard/DashboardView.vue";
 import authService from "@/services/authService.js";
+import NotFoundView from "@/views/NotFoundView.vue";
+import GroupView from "@/views/dashboard/GroupView.vue";
+import ParliamentView from "@/views/dashboard/ParliamentView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +34,27 @@ const router = createRouter({
       meta: {
           requiresAuth: true
       }
+    },
+    {
+      path: '/group',
+      name: 'group',
+      component: GroupView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/parliament',
+      name: 'parliament',
+      component: ParliamentView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: NotFoundView
     }
   ]
 })
