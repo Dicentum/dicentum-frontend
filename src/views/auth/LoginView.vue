@@ -31,7 +31,7 @@ export default {
     }
   },
   mounted() {
-    this.$toast = useToast(); // Initialize toast instance on component mount
+    this.$toast = useToast();
   }
 };
 </script>

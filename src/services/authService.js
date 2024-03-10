@@ -12,7 +12,7 @@ const authService = {
             const response = await axios.post(`${API_URL}/auth/register`, userData);
             return response.data;
         } catch (error) {
-            throw Error(error || 'Failed to register');
+            throw Error(error.response.data.message || 'Failed to register user');
         }
     },
     login: async (credentials) => {
@@ -24,19 +24,7 @@ const authService = {
             localStorage.setItem(TOKEN_KEY, token);
             return response.data;
         } catch (error) {
-            if (error == 'AxiosError: Network Error') {
-                throw Error('Failed to connect to the server');
-            }
-            else if (error == 'AxiosError: Request failed with status code 404') {
-                throw Error('Failed to login. Please check your credentials and try again');
-            }
-            else if (error == 'AxiosError: Request failed with status code 500'){
-                throw Error('There was a server error. Try again in a few minutes');
-            }
-            else{
-                throw Error(error);
-
-            }
+            throw Error(error.response.data.message || 'Failed to login');
         }
     },
     logout: () => {
