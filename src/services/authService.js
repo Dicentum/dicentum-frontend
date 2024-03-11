@@ -31,6 +31,14 @@ const authService = {
         localStorage.removeItem(EXPIRATION_KEY);
         localStorage.removeItem(TOKEN_KEY);
     },
+    validate: async (id, body) => {
+        try {
+            const validation = await axios.post(`${API_URL}/auth/validate/${id}`, body);
+            return validation.data;
+        } catch (error) {
+            throw Error(error.response.data.message || 'Failed to validate user');
+        }
+    },
     getToken: () => {
         return localStorage.getItem(TOKEN_KEY);
     },
