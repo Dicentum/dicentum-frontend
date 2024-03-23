@@ -48,8 +48,8 @@ export default {
         </p>
 
         <div class="form-floating mb-3">
-          <input type="text" class="form-control custom-input" placeholder="name" v-model="verification" @input="validateInput" maxlength="6">
-          <label for="floatingInput" class="col-form-label-lg">Code</label>
+          <input type="text" class="form-control" placeholder="name" v-model="verification" @input="validateInput" maxlength="6" style="height: 100px; font-size: 40px; font-family: 'Microsoft Sans Serif',sans-serif">
+          <label for="floatingInput">Code</label>
         </div>
 
         <button class="btn btn-primary w-100 py-2" type="submit">Submit</button>
@@ -64,10 +64,5 @@ export default {
   max-width: 800px;
   padding: 15px;
   margin: auto;
-}
-.custom-input {
-  font-size: 20px;
-  max-height: 400px;
-  height: 300px;
 }
 </style>

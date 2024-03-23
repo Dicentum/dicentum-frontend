@@ -12,6 +12,8 @@ const store = new Vuex.Store({
         userid: null,
         name: null,
         surname: null,
+        groupId: null,
+        parliamentId: null
     },
     mutations: {
         setAuth(state, auth) {
@@ -47,6 +49,12 @@ const store = new Vuex.Store({
         },
         setSurname(state, surname) {
             state.surname = surname;
+        },
+        setGroupId(state, groupId) {
+            state.groupId = groupId;
+        },
+        setParliamentId(state, parliamentId) {
+            state.parliamentId = parliamentId;
         }
     },
     actions: {
@@ -91,6 +99,12 @@ const store = new Vuex.Store({
         },
         setSurname({ commit }, surname) {
             commit('setSurname', surname);
+        },
+        setGroupId({ commit }, groupId) {
+            commit('setGroupId', groupId);
+        },
+        setParliamentId({ commit }, parliamentId) {
+            commit('setParliamentId', parliamentId);
         }
     },
     getters: {
@@ -117,6 +131,12 @@ const store = new Vuex.Store({
         },
         getSurname: state => {
             return state.surname;
+        },
+        getGroupId: state => {
+            return state.groupId;
+        },
+        getParliamentId: state => {
+            return state.parliamentId;
         }
     },
     plugins: [createPersistedState()],

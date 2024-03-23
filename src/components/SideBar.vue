@@ -32,7 +32,7 @@ onMounted(() => {
         </router-link>
       </li>
       <li class="nav-item">
-        <router-link to="/group" class="nav-link" exact active-class="router-link-active" exact-active-class="router-link-exact-active">
+        <router-link to="/groups" class="nav-link" exact active-class="router-link-active" exact-active-class="router-link-exact-active">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
           Parliamentary Group
         </router-link>

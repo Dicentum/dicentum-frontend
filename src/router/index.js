@@ -6,9 +6,10 @@ import RegisterView from "@/views/auth/RegisterView.vue";
 import DashboardView from "@/views/dashboard/DashboardView.vue";
 import authService from "@/services/authService.js";
 import NotFoundView from "@/views/NotFoundView.vue";
-import GroupView from "@/views/dashboard/GroupView.vue";
+import GroupView from "@/views/dashboard/GroupsView.vue";
 import ParliamentView from "@/views/dashboard/ParliamentView.vue";
 import ValidateView from "@/views/auth/ValidateView.vue";
+import GroupsView from "@/views/dashboard/GroupsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,9 +43,9 @@ const router = createRouter({
       }
     },
     {
-      path: '/group',
-      name: 'group',
-      component: GroupView,
+      path: '/groups',
+      name: 'groups',
+      component: GroupsView,
       meta: {
         requiresAuth: true
       }

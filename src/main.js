@@ -7,13 +7,12 @@ import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 
 import 'bootstrap/dist/css/bootstrap.css'
-import bootstrap from 'bootstrap/dist/js/bootstrap.js'
+import 'bootstrap/dist/js/bootstrap.js'
 
 const app = createApp(App)
 
 app.use(router)
 app.use(store)
-app.use(bootstrap)
 app.use(Toast, {
     timeout: 10000,
     position: 'bottom-center'

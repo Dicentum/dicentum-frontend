@@ -1,6 +1,7 @@
 // services/groupService.js
 import axios from 'axios';
 import authService from "@/services/authService.js";
+import parliamentService from "@/services/parliamentService.js";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const TOKEN_KEY = 'session';
@@ -26,7 +27,21 @@ const groupService = {
             .catch((e)=>{
                 console.log('Error: ' + e);
             });
-    }
+    },
+    getGroupsRelated: async (parliamentId) => {
+        if(!authService.isAuthenticated()){
+            throw new Error('Token not found');
+        }
+        return axios.get(`${API_URL}/parliaments/${parliamentId}`, {
+            headers: {
+                Authorization: `${authService.getToken()}`
+            }
+        })
+            .then((response) => response.data.parliamentaryGroups)
+            .catch((e)=>{
+                console.log('Error: ' + e);
+            });
+    },
 }
 
 export default groupService;

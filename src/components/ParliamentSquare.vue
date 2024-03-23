@@ -1,8 +1,8 @@
 <script>
 export default {
-  name: 'GroupSquare',
+  name: 'ParliamentSquare',
   props: {
-    group: {
+    parliament: {
       type: Object,
       required: true
     }
@@ -11,14 +11,12 @@ export default {
 </script>
 
 <template>
-  <div class="group-container" v-if="group && group.name && group.description">
+  <div class="group-container" v-if="parliament && parliament.name && parliament.description && parliament.location && parliament.totalSeats">
     <div class="group-square">
-      <h3 class="text-start">{{ group.name }}</h3>
-      <p class="text-start">{{ group.description }}</p>
-      <p class="text-start">
-        <span>{{group.seats.toString()+" "}}</span>
-        <span v-for="seat in group.seats" :key="seat">👤</span>
-      </p>
+      <h2 class="text-start">{{ parliament.name }}</h2>
+      <h3 class="text-start">{{ parliament.location }}</h3>
+      <p class="text-start">{{ parliament.description }}</p>
+      <p class="text-start">{{ parliament.totalSeats }}</p>
     </div>
   </div>
 </template>
@@ -37,7 +35,7 @@ export default {
   align-items: flex-start;
   width: 100%;
   height: 20%;
-  background-color: #eaeaea;
+  background-color: #f5f5f5;
   border-radius: 5px;
   box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.1);
   padding: 20px;

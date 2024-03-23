@@ -8,7 +8,7 @@ export default {
   data() {
     return {
       groupService: null,
-      group: null,
+      group: {},
       user: null,
     };
   },
@@ -41,6 +41,9 @@ export default {
         this.group = group;
         if(group==undefined){
           this.group = {name: "No group associated", description: "Associate first a group here to see the content."};
+        } else {
+          this.$store.commit('setGroupId', group._id);
+          this.$store.commit('setParliamentId', group.parliament);
         }
       } catch (error) {
         console.error(error);
