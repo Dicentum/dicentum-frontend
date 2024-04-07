@@ -13,7 +13,8 @@ const store = new Vuex.Store({
         name: null,
         surname: null,
         groupId: null,
-        parliamentId: null
+        parliamentId: null,
+        photo: null
     },
     mutations: {
         setAuth(state, auth) {
@@ -35,7 +36,6 @@ const store = new Vuex.Store({
             state.loggedIn = loggedIn;
         },
         logOut(state) {
-            console.log('Logging out... 1');
             state.loggedIn = false;
             state.username = null;
             state.email = null;
@@ -43,6 +43,9 @@ const store = new Vuex.Store({
             state.userid = null;
             state.name = null;
             state.surname = null;
+            state.groupId = null;
+            state.parliamentId = null;
+            state.photo = null;
         },
         setName(state, name) {
             state.name = name;
@@ -55,14 +58,16 @@ const store = new Vuex.Store({
         },
         setParliamentId(state, parliamentId) {
             state.parliamentId = parliamentId;
+        },
+        setPhoto(state, photo) {
+            state.photo = photo;
         }
     },
     actions: {
         async fetchUserProfile({ commit }) {
             try {
-                console.log('Fetching user profile...');
                 const userProfile = await authService.getAuthData();
-                console.log(userProfile);
+                console.log('User profile:', userProfile);
                 commit('setUser', userProfile.user);
                 commit('setEmail', userProfile.email);
                 commit('setUserRole', userProfile.role);
@@ -70,6 +75,7 @@ const store = new Vuex.Store({
                 commit('setLoggedIn', true);
                 commit('setName', userProfile.name);
                 commit('setSurname', userProfile.surname);
+                commit('setPhoto', userProfile.photo);
             } catch (error) {
                 console.error('Error fetching user profile:', error.message);
             }
@@ -105,6 +111,9 @@ const store = new Vuex.Store({
         },
         setParliamentId({ commit }, parliamentId) {
             commit('setParliamentId', parliamentId);
+        },
+        setPhoto({ commit }, photo) {
+            commit('setPhoto', photo);
         }
     },
     getters: {
@@ -137,6 +146,9 @@ const store = new Vuex.Store({
         },
         getParliamentId: state => {
             return state.parliamentId;
+        },
+        getPhoto: state => {
+            return state.photo;
         }
     },
     plugins: [createPersistedState()],

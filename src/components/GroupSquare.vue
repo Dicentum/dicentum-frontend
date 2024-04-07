@@ -1,4 +1,5 @@
 <script>
+
 export default {
   name: 'GroupSquare',
   props: {
@@ -7,20 +8,28 @@ export default {
       required: true
     }
   },
+  methods: {
+    navigateToGroupDetail() {
+      this.$router.push(`/groups/${this.group._id}`);
+    }
+  }
 };
 </script>
 
 <template>
-  <div class="group-container" v-if="group && group.name && group.description">
+  <div class="group-container" v-if="group && group.name && group.description" @click="navigateToGroupDetail">
     <div class="group-square">
       <h3 class="text-start">{{ group.name }}</h3>
       <p class="text-start">{{ group.description }}</p>
-      <p class="text-start">
-        <span>{{group.seats.toString()+" "}}</span>
+      <p class="text-start" v-if="group.seats">
+        <span>{{ group.seats.toString() + " " }}</span>
         <span v-for="seat in group.seats" :key="seat">👤</span>
       </p>
     </div>
   </div>
+  <div v-else>
+    <BSpinner />
+    </div>
 </template>
 
 <style scoped>
@@ -28,6 +37,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .group-square {

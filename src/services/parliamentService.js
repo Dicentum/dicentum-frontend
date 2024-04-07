@@ -3,10 +3,10 @@ import axios from 'axios';
 import authService from "@/services/authService.js";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const TOKEN_KEY = 'session';
 
 const parliamentService = {
     getParliaments: async () => {
+
         return axios.get(`${API_URL}/parliaments`)
             .then((response) => response.data)
             .catch((e)=>{
@@ -14,9 +14,7 @@ const parliamentService = {
             });
     },
     getParliament: async (id) => {
-        if(!authService.isAuthenticated()){
-            throw new Error('Token not found');
-        }
+
         return axios.get(`${API_URL}/parliaments/${id}`, {
             headers: {
                 Authorization: `${authService.getToken()}`
@@ -26,6 +24,19 @@ const parliamentService = {
             .catch((e)=>{
                 console.log('Error: ' + e);
             });
+    },
+    updateParliament: async (id, parliament) => {
+        try {
+            const response = await axios.put(`${API_URL}/parliaments/${id}`, parliament,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'Failed to update parliament');
+        }
     },
 }
 export default parliamentService;

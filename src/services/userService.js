@@ -15,9 +15,6 @@ const userService = {
         }
     },
     getUser: async (id) => {
-        if(!authService.isAuthenticated()){
-            throw new Error('Token not found or expired');
-        }
         try {
             const response = await axios.get(`${API_URL}/users/${id}`,
                 {
@@ -28,6 +25,19 @@ const userService = {
             return response.data;
         } catch (error) {
             throw new Error(error.response.data.message || 'Failed to fetch user');
+        }
+    },
+    updateUser: async (id, body) => {
+        try {
+            const response = await axios.put(`${API_URL}/users/${id}`, body,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'Failed to update user');
         }
     },
 };

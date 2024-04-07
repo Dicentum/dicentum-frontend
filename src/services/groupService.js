@@ -15,9 +15,7 @@ const groupService = {
             });
     },
     getGroup: async (id) => {
-        if(!authService.isAuthenticated()){
-            throw new Error('Token not found');
-        }
+
         return axios.get(`${API_URL}/groups/${id}`, {
             headers: {
                 Authorization: `${authService.getToken()}`
@@ -29,9 +27,7 @@ const groupService = {
             });
     },
     getGroupsRelated: async (parliamentId) => {
-        if(!authService.isAuthenticated()){
-            throw new Error('Token not found');
-        }
+
         return axios.get(`${API_URL}/parliaments/${parliamentId}`, {
             headers: {
                 Authorization: `${authService.getToken()}`
@@ -42,6 +38,45 @@ const groupService = {
                 console.log('Error: ' + e);
             });
     },
+    requestGroup: async (groupId, userId) => {
+        try {
+            const response = await axios.post(`${API_URL}/groups/request/${groupId}`, userId,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'Failed to request group');
+        }
+    },
+    deleteRequestGroup: async (groupId, userId) => {
+        try {
+            const response = await axios.delete(`${API_URL}/groups/request/${groupId}/${userId}`,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'Failed to delete request group');
+        }
+    },
+    acceptRequestGroup: async (groupId, userId) => {
+        try {
+            const response = await axios.post(`${API_URL}/groups/approve/${groupId}/${userId}`,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'Failed to accept request group');
+        }
+    }
 }
 
 export default groupService;

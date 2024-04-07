@@ -7,17 +7,25 @@ export default {
       required: true
     }
   },
+  methods: {
+    navigateToParliamentDetail() {
+      this.$router.push(`/parliament`);
+    }
+  }
 };
 </script>
 
 <template>
-  <div class="group-container" v-if="parliament && parliament.name && parliament.description && parliament.location && parliament.totalSeats">
+  <div class="group-container" v-if="parliament && parliament.name && parliament.description" @click="navigateToParliamentDetail">
     <div class="group-square">
-      <h2 class="text-start">{{ parliament.name }}</h2>
-      <h3 class="text-start">{{ parliament.location }}</h3>
+      <h3 class="text-start">{{ parliament.name }}</h3>
+      <h5 class="text-start" v-if="parliament.location">📍 {{ parliament.location }}</h5>
       <p class="text-start">{{ parliament.description }}</p>
-      <p class="text-start">{{ parliament.totalSeats }}</p>
+      <p class="text-start" v-if="parliament.totalSeats">🪑 {{ parliament.totalSeats }}</p>
     </div>
+  </div>
+  <div v-else>
+    <BSpinner />
   </div>
 </template>
 
@@ -26,6 +34,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer
 }
 
 .group-square {
@@ -35,7 +44,7 @@ export default {
   align-items: flex-start;
   width: 100%;
   height: 20%;
-  background-color: #f5f5f5;
+  background-color: #eaeaea;
   border-radius: 5px;
   box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.1);
   padding: 20px;

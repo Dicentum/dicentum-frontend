@@ -45,16 +45,14 @@ export default {
   height: 100%;
 }
 .layout_side {
-  display: flex;
-  margin-left: 25%;
-  margin-right: -40%;
+  display: grid;
+  margin-left: 275px;
 }
 .layout {
   display: flex;
 }
 .webcontent {
-  margin-top: 80px;
-  width: 100%;
+  padding-top: 80px;
   flex: 1;
 }
 </style>

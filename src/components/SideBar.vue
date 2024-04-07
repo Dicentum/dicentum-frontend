@@ -43,6 +43,18 @@ onMounted(() => {
           Parliament
         </router-link>
       </li>
+      <li class="nav-item">
+        <router-link to="/" class="nav-link" exact active-class="router-link-active" exact-active-class="router-link-exact-active">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Current Debates
+        </router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/" class="nav-link" exact active-class="router-link-active" exact-active-class="router-link-exact-active">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Closed Debates
+        </router-link>
+      </li>
     </ul>
     <div class="clock mt-auto">
       <strong>{{ currentTime }}</strong>
@@ -64,32 +76,21 @@ onMounted(() => {
   text-align: center;
   font-size: 1.25rem;
 }
+.nav-link.router-link-active,
+.nav-link.router-link-exact-active {
+  color: #fff;
+  background-color: #007bff;
+}
+.nav-link.router-link-active:hover,
+.nav-link.router-link-exact-active:hover {
+  background-color: #007bff;
+  color: #fff;
+}
 .nav-link {
-  color: #000; /* Black text color for all links */
+  color: #000;
 }
-
 .nav-link:hover {
-  background-color: #e9ecef; /* Grey background when hovering */
-}
-
-.navbar-dark .navbar-nav .nav-link {
-  color: #000; /* Black text color for navbar links */
-}
-
-.navbar-dark .navbar-nav .nav-link:hover {
-  background-color: #e9ecef; /* Grey background when hovering over navbar links */
-}
-
-/* Change only the background color of active links */
-.router-link-active,
-.router-link-exact-active {
-  background-color: #007bff; /* Blue background for active links */
-}
-
-/* Change the text color of active links */
-.router-link-active .nav-link,
-.router-link-exact-active .nav-link {
-  color: #fff; /* White text color for active links */
+  background-color: #e9ecef;
 }
 </style>
 

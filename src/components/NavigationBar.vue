@@ -4,13 +4,20 @@ import defaultUser from '@/assets/usericons/default.png'
 import router from "@/router/index.js";
 import { useToast } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
+import authService from "@/services/authService.js";
+import fileService from "@/services/fileService.js";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
   name: 'NavigationBar',
   data() {
     return {
       logo: logo,
-      defaultUser: defaultUser
+      defaultUser: defaultUser,
+      apiURL: API_URL,
+      image: null,
+      showImage: false
     }
   },
   computed: {
@@ -28,6 +35,9 @@ export default {
     },
     surname() {
       return this.$store.state.surname;
+    },
+    photo() {
+      return this.$store.state.photo;
     }
   },
   methods: {
@@ -42,11 +52,26 @@ export default {
       } else {
         this.$toast.error('Logout failed!');
       }
-    }
+    },
+    async fetchImage() {
+      try {
+        if (this.photo) {
+          const imageData = await fileService.getImageData(this.photo);
+          console.log(imageData);
+          this.image = imageData.filename;
+          this.showImage = true;
+        }
+      } catch (error) {
+        console.error(error.message);
+        this.$toast.error(error.message);
+      }
+    },
   },
   mounted() {
     this.$toast = useToast();
-
+    if (this.photo !== 'undefined') {
+      this.fetchImage();
+    }
   }
 }
 </script>
@@ -67,14 +92,19 @@ export default {
         <div v-if="loggedIn">
           <div class="dropdown">
             <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">
-              <img :src="defaultUser" alt="" width="32" height="32" class="rounded-circle me-2">
+              <div v-if="showImage">
+                <img :src="apiURL+'/files/'+image" alt="" width="32" height="32" class="rounded-circle me-2">
+              </div>
+              <div v-else>
+                <img :src="defaultUser" alt="" width="32" height="32" class="rounded-circle me-2">
+              </div>
               <strong>{{ surname }}</strong>, {{ name }}
             </a>
             <ul class="dropdown-menu text-small shadow dropdown-menu-right">
               <li><a class="dropdown-item">{{ username }}</a></li>
               <li><a class="dropdown-item">{{ email }}</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><router-link class="dropdown-item" :to="{name: 'profile'}">Profile</router-link></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#" style="color: firebrick" @click="logout">Sign out</a></li>
             </ul>

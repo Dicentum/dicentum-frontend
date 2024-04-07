@@ -1,6 +1,7 @@
 // services/authService.js
 import axios from 'axios';
 import store from "@/store/index.js";
+import router from "@/router/index.js";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const TOKEN_KEY = 'session';
@@ -46,20 +47,27 @@ const authService = {
         try {
             const token = localStorage.getItem(TOKEN_KEY);
             const expiration = localStorage.getItem(EXPIRATION_KEY);
-            const isAuthenticated = token !== null && Date.now() / 1000 < expiration;
+            const tokenExist = token !== null;
+            const expired = Math.floor(Date.now() / 1000) > expiration;
 
-            if (!isAuthenticated) {
+            if (!tokenExist || expired) {
                 authService.logout();
                 store.commit('logOut');
+                if (expired) {
+                    alert("⚠︎ Your current session has expired. Please log in again.");
+                }
+                return false;
+            } else {
+                return true;
             }
-
-            return isAuthenticated;
         } catch (error) {
-            return false;
+            throw new Error(error);
         }
     },
+
     getAuthData: async () => {
-        if (!authService.isAuthenticated()) {
+        const isAuthenticated = authService.isAuthenticated();
+        if (!isAuthenticated) {
             throw new Error('Token not found or expired');
         }
         try {
@@ -72,7 +80,7 @@ const authService = {
         } catch (error) {
             throw new Error(error.response.data.message || 'Failed to fetch data');
         }
-    }
+    },
 };
 
 export default authService;

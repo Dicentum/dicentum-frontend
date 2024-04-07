@@ -6,10 +6,12 @@ import RegisterView from "@/views/auth/RegisterView.vue";
 import DashboardView from "@/views/dashboard/DashboardView.vue";
 import authService from "@/services/authService.js";
 import NotFoundView from "@/views/NotFoundView.vue";
-import GroupView from "@/views/dashboard/GroupsView.vue";
-import ParliamentView from "@/views/dashboard/ParliamentView.vue";
+import ParliamentView from "@/views/parliament/ParliamentView.vue";
 import ValidateView from "@/views/auth/ValidateView.vue";
-import GroupsView from "@/views/dashboard/GroupsView.vue";
+import GroupsView from "@/views/groups/GroupsView.vue";
+import GroupDetailView from "@/views/groups/GroupDetailView.vue";
+import EditParliamentView from "@/views/parliament/EditParliamentView.vue";
+import ProfileView from "@/views/dashboard/ProfileView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,9 +45,25 @@ const router = createRouter({
       }
     },
     {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
       path: '/groups',
       name: 'groups',
       component: GroupsView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/groups/:id',
+      name: 'groupsDetails',
+      component: GroupDetailView,
       meta: {
         requiresAuth: true
       }
@@ -59,6 +77,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/editParliament',
+      name: 'editParliament',
+      component: EditParliamentView,
+        meta: {
+            requiresAuth: true
+        },
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
       component: NotFoundView
@@ -68,7 +94,7 @@ const router = createRouter({
 
 // Navigation guard to check if the route requires authentication
 router.beforeEach(async (to, from, next) => {
-  if (to.meta.requiresAuth && !authService.getToken()) {
+  if (to.meta.requiresAuth && !authService.isAuthenticated()) {
     next({ name: 'login' });
   } else {
     next();
