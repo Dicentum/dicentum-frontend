@@ -21,10 +21,12 @@ export default {
       try {
         const id = this.$route.params.id;
         this.group = await groupService.getGroup(id);
-        console.log(this.group);
       } catch (error) {
         console.error(error);
       }
+    },
+    async editGroup() {
+      this.$router.push({ name: 'editGroup' });
     },
   }
 };
@@ -32,7 +34,12 @@ export default {
 
 <template>
   <div v-if="group">
-    <h1>{{group.name }}</h1>
+    <div class="editable">
+      <h2>{{group.name}}</h2>
+      <div style="margin-left: 5rem"><button type="button" class="btn btn-secondary" @click="editGroup">
+        Edit
+      </button></div>
+    </div>
     <h4>{{group.description }}</h4>
     <p class="text-start" v-if="group.seats">
       <span>Seats: <strong>{{group.seats.toString()}}</strong></span>
@@ -63,5 +70,9 @@ export default {
 </template>
 
 <style scoped>
-/* Add your styles here */
+.editable{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

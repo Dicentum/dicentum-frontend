@@ -27,9 +27,12 @@ export default {
       </p>
     </div>
   </div>
-  <div v-else>
-    <BSpinner />
-    </div>
+  <div v-else class="d-flex">
+<!--    <BButton variant="primary" disabled>
+      <BSpinner small type="grow" />
+      Loading...
+    </BButton>-->
+  </div>
 </template>
 
 <style scoped>

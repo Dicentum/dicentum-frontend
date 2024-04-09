@@ -17,6 +17,7 @@ export default {
       defaultUser: defaultUser,
       apiURL: API_URL,
       image: null,
+      avatar: null,
       showImage: false
     }
   },
@@ -57,7 +58,6 @@ export default {
       try {
         if (this.photo) {
           const imageData = await fileService.getImageData(this.photo);
-          console.log(imageData);
           this.image = imageData.filename;
           this.showImage = true;
         }

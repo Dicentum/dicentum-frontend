@@ -52,7 +52,7 @@ export default {
             <label for="floatingInput">Name</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" placeholder="Description" v-model="parliament.description">
+            <textarea class="form-control" placeholder="Description" v-model="parliament.description"></textarea>
             <label for="floatingInput">Description</label>
           </div>
           <div class="form-floating mb-3">

@@ -24,8 +24,11 @@ export default {
       <p class="text-start" v-if="parliament.totalSeats">🪑 {{ parliament.totalSeats }}</p>
     </div>
   </div>
-  <div v-else>
-    <BSpinner />
+  <div v-else class="d-flex">
+    <BButton variant="primary" disabled>
+      <BSpinner small type="grow" />
+      Loading...
+    </BButton>
   </div>
 </template>
 

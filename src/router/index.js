@@ -12,6 +12,9 @@ import GroupsView from "@/views/groups/GroupsView.vue";
 import GroupDetailView from "@/views/groups/GroupDetailView.vue";
 import EditParliamentView from "@/views/parliament/EditParliamentView.vue";
 import ProfileView from "@/views/dashboard/ProfileView.vue";
+import DebatesView from "@/views/debates/DebatesView.vue";
+import EditGroupView from "@/views/groups/EditGroupView.vue";
+import CreateGroupView from "@/views/groups/CreateGroupView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -69,6 +72,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/groups/create',
+      name: 'createGroup',
+      component: CreateGroupView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/parliament',
       name: 'parliament',
       component: ParliamentView,
@@ -83,6 +94,22 @@ const router = createRouter({
         meta: {
             requiresAuth: true
         },
+    },
+    {
+      path: '/editGroup/:id',
+      name: 'editGroup',
+      component: EditGroupView,
+      meta: {
+        requiresAuth: true
+      },
+    },
+    {
+        path: '/debates',
+        name: 'debates',
+        component: DebatesView,
+            meta: {
+                requiresAuth: true
+            },
     },
     {
       path: '/:pathMatch(.*)*',

@@ -4,6 +4,7 @@ import GroupModal from "@/components/GroupModal.vue";
 import groupService from "@/services/groupService.js";
 import router from "@/router/index.js";
 import GroupDeleteModal from "@/components/GroupDeleteModal.vue";
+import userService from "@/services/userService.js";
 
 export default {
   name: 'GroupsView',
@@ -14,6 +15,7 @@ export default {
       showButton: false,
       showModal: false,
       emptyGroups: [],
+      condition: false,
     };
   },
   components: {
@@ -40,16 +42,41 @@ export default {
         console.error(error);
       }
     },
+    createGroup() {
+      this.$router.push({ name: 'createGroup' });
+    },
+    async isAdminAndParliamentCreated() {
+      try {
+        const userId = await this.$store.state.userid;
+        if (!userId) {
+          throw new Error('User ID is not set');
+        }
+        const user = await userService.getUser(userId);
+        const parliament = this.$store.state.parliamentId;
+        if (user.role === "admin" && parliament) {
+          this.condition = true;
+        }
+      } catch (error) {
+        console.log('Failed to fetch user');
+      }
+    },
   },
   mounted() {
-    this.fetchGroups();
+    this.fetchGroups().then(() => {
+      this.isAdminAndParliamentCreated();
+    });
   },
 };
 </script>
 
 <template>
   <div class="container">
-    <h2>Parliamentary Groups:</h2>
+    <div class="editable">
+      <h2>Parliamentary Groups:</h2>
+      <div style="margin-left: 5rem" v-if="condition"><button type="button" class="btn btn-primary" @click="createGroup">
+        Create new group
+      </button></div>
+    </div>
     <p>Here you can see the parliamentary groups associated with the current parliament</p>
     <div class="group-container" v-if="emptyGroups.length === 0">
       <GroupSquare v-for="group in groups" :key="group.id" :group="group"/>
@@ -72,5 +99,16 @@ export default {
 }
 .group-container {
   margin-bottom: 2rem;
+}
+.container p:first-of-type {
+  margin-bottom: 0.5em; /* Adjust as needed */
+}
+.container p:last-of-type {
+  margin-top: 0.5em; /* Adjust as needed */
+}
+.editable{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

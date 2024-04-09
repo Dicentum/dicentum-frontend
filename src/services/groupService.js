@@ -2,6 +2,7 @@
 import axios from 'axios';
 import authService from "@/services/authService.js";
 import parliamentService from "@/services/parliamentService.js";
+import {createRouterMatcher as Promise} from "vue-router";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const TOKEN_KEY = 'session';
@@ -10,7 +11,7 @@ const groupService = {
     getGroups: async () => {
         return axios.get(`${API_URL}/groups`)
             .then((response) => response.data)
-            .catch((e)=>{
+            .catch((e) => {
                 console.log('Error: ' + e);
             });
     },
@@ -22,7 +23,7 @@ const groupService = {
             }
         })
             .then((response) => response.data)
-            .catch((e)=>{
+            .catch((e) => {
                 console.log('Error: ' + e);
             });
     },
@@ -34,7 +35,7 @@ const groupService = {
             }
         })
             .then((response) => response.data.parliamentaryGroups)
-            .catch((e)=>{
+            .catch((e) => {
                 console.log('Error: ' + e);
             });
     },
@@ -76,7 +77,33 @@ const groupService = {
         } catch (error) {
             throw new Error(error.response.data.message || 'Failed to accept request group');
         }
-    }
+    },
+    createGroup: async (group) => {
+        try {
+            const response = await axios.post(`${API_URL}/groups`, group,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'Failed to create group');
+        }
+    },
+    updateGroup: async (id, group) => {
+        try {
+            const response = await axios.put(`${API_URL}/groups/${id}`, group,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'Failed to update group');
+        }
+    },
 }
 
 export default groupService;

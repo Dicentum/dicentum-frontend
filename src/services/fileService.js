@@ -24,7 +24,12 @@ const fileService = {
     },
     getImageData: async (id) => {
         try {
-            const response = await axios.get(`${API_URL}/files/image/${id}`);
+            const response = await axios.get(`${API_URL}/files/image/${id}`,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
             return response.data;
         } catch (error) {
             throw new Error(error.response.data.message || 'Failed to fetch image data');

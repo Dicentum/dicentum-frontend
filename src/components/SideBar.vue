@@ -44,15 +44,9 @@ onMounted(() => {
         </router-link>
       </li>
       <li class="nav-item">
-        <router-link to="/" class="nav-link" exact active-class="router-link-active" exact-active-class="router-link-exact-active">
+        <router-link to="/debates" class="nav-link" exact active-class="router-link-active" exact-active-class="router-link-exact-active">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-          Current Debates
-        </router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/" class="nav-link" exact active-class="router-link-active" exact-active-class="router-link-exact-active">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-          Closed Debates
+          Debates
         </router-link>
       </li>
     </ul>
