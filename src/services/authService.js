@@ -2,6 +2,7 @@
 import axios from 'axios';
 import store from "@/store/index.js";
 import router from "@/router/index.js";
+import {fido2Create} from "@ownid/webauthn";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const TOKEN_KEY = 'session';
@@ -26,6 +27,28 @@ const authService = {
             return response.data;
         } catch (error) {
             throw Error(error.response.data.message || 'Failed to login');
+        }
+    },
+    registerKey: async (key) => {
+        try {
+            const response = await axios.post(`${API_URL}/auth/registerKey/start`, {key}, {
+                headers: {
+                    Authorization: `${authService.getToken()}`
+                }
+            });
+            const publicKey = response.data;
+            const data = await fido2Create(publicKey, key);
+            const finishResponse = await axios.post(`${API_URL}/auth/registerKey/finish`, data, {
+                headers: {
+                    Authorization: `${authService.getToken()}`
+                }
+            });
+            if (finishResponse.data) {
+                alert("Successfully created using webAuthn");
+            }
+            return finishResponse.data;
+        } catch (error) {
+            throw Error(error.response.data.message || 'Failed to register key');
         }
     },
     logout: () => {

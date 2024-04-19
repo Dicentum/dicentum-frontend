@@ -1,12 +1,15 @@
 <script>
 import userService from "@/services/userService.js";
 import {useToast} from "vue-toastification";
+import logo from '@/assets/passkeys-logo.png';
+import authService from "@/services/authService.js";
 
 export default {
   name: 'ProfileView',
   data() {
     return {
       user: {},
+      icon: logo,
     };
   },
   methods:{
@@ -34,6 +37,16 @@ export default {
         await userService.updateUser(this.user._id, formData);
         this.$router.push({ name: 'dashboard' });
         this.$toast.success('Profile updated! All the changes will be visible in the next login.');
+      } catch (error) {
+        console.error(error.message);
+        this.$toast.error(error.message);
+      }
+    },
+    async enablePassKey() {
+      try {
+        await authService.registerKey()
+        this.$router.push({ name: 'dashboard' });
+        this.$toast.success('PassKey enabled!');
       } catch (error) {
         console.error(error.message);
         this.$toast.error(error.message);
@@ -75,6 +88,18 @@ export default {
             <button class="btn btn-primary w-45 py-2" type="submit">Update</button>
           </div>
         </form>
+        <div v-if="user.credentialId && user.credentialPublicKey">
+          PassKey Enabled
+        </div>
+        <div v-else class="py-5">
+          <label>You can enable your passkey here to be able to vote securely:</label>
+          <br>
+          <br>
+          <BButton block variant="dark" @click="enablePassKey">
+            <img class="logo-icon" src="@/assets/passkeys-logo.png" alt="Passkeys Logo" width="24" height="24">
+            Enable PassKey
+          </BButton>
+        </div>
       </div>
       <div v-else>
         <BSpinner />
@@ -84,5 +109,4 @@ export default {
 </template>
 
 <style scoped>
-
 </style>
