@@ -38,7 +38,7 @@ export default {
 
 <template>
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#groupModal">
+  <button type="button" class="btn btn-secondary w-45 py-2" data-bs-toggle="modal" data-bs-target="#groupModal">
     Reequest to join
   </button>
 

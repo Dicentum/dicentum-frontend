@@ -38,7 +38,7 @@ export default {
 
 <template>
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#groupDeleteModal">
+  <button type="button" class="btn btn-danger w-45 py-2" data-bs-toggle="modal" data-bs-target="#groupDeleteModal">
     Delete current request
   </button>
 

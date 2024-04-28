@@ -30,7 +30,9 @@ export default {
     async updateProfile() {
       try {
         const formData = new FormData();
-        formData.append('user', JSON.stringify(this.user));
+        Object.entries(this.user).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
         if (this.file) {
           formData.append('file', this.file);
         }
@@ -44,11 +46,20 @@ export default {
     },
     async enablePassKey() {
       try {
-        await authService.registerKey()
+        await authService.registerKey();
         this.$router.push({ name: 'dashboard' });
         this.$toast.success('PassKey enabled!');
       } catch (error) {
-        console.error(error.message);
+        console.error(error);
+        this.$toast.error(error.message);
+      }
+    },
+    async testPassKey() {
+      try {
+        await authService.loginKey();
+        this.$toast.success('PassKey is working correctly!');
+      } catch (error) {
+        console.error(error);
         this.$toast.error(error.message);
       }
     },
@@ -88,8 +99,14 @@ export default {
             <button class="btn btn-primary w-45 py-2" type="submit">Update</button>
           </div>
         </form>
-        <div v-if="user.credentialId && user.credentialPublicKey">
-          PassKey Enabled
+        <div v-if="user.passkeys && user.passkeys.length > 0" class="py-5">
+          <label>The PassKey is currently enabled for this account. You can test it here:</label>
+          <br>
+          <br>
+          <BButton block variant="dark" @click="testPassKey">
+            <img class="logo-icon" src="@/assets/verified.png" alt="Passkeys Logo" width="24" height="24">
+            Test PassKey
+          </BButton>
         </div>
         <div v-else class="py-5">
           <label>You can enable your passkey here to be able to vote securely:</label>

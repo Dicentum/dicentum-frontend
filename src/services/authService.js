@@ -2,7 +2,7 @@
 import axios from 'axios';
 import store from "@/store/index.js";
 import router from "@/router/index.js";
-import {fido2Create} from "@ownid/webauthn";
+import {startRegistration, startAuthentication} from "@simplewebauthn/browser";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const TOKEN_KEY = 'session';
@@ -29,26 +29,64 @@ const authService = {
             throw Error(error.response.data.message || 'Failed to login');
         }
     },
-    registerKey: async (key) => {
+    registerKey: async () => {
         try {
-            const response = await axios.post(`${API_URL}/auth/registerKey/start`, {key}, {
+            const response = await axios.get(`${API_URL}/auth/registerKey/start`,  {
                 headers: {
                     Authorization: `${authService.getToken()}`
                 }
             });
-            const publicKey = response.data;
-            const data = await fido2Create(publicKey, key);
-            const finishResponse = await axios.post(`${API_URL}/auth/registerKey/finish`, data, {
+            let attResp;
+            attResp = await startRegistration(response.data);
+            const finishResponse = await axios.post(`${API_URL}/auth/registerKey/finish`, attResp, {
                 headers: {
                     Authorization: `${authService.getToken()}`
                 }
             });
-            if (finishResponse.data) {
-                alert("Successfully created using webAuthn");
-            }
             return finishResponse.data;
         } catch (error) {
-            throw Error(error.response.data.message || 'Failed to register key');
+            if (error.name === 'AbortError') {
+                throw Error('The operation was cancelled by the user');
+            } else if (error.name === 'NotAllowedError') {
+                throw Error('The operation was rejected by the user');
+            } else if (error.name === 'InvalidStateError') {
+                throw Error('Authenticator was probably already registered by user');
+            } else if (error.response) {
+                throw Error(error.response.data.message || 'Failed to register key');
+            } else {
+                alert(error);
+                throw Error(error.message || 'An error occurred');
+            }
+        }
+    },
+    loginKey: async () => {
+        try{
+            const response = await axios.get(`${API_URL}/auth/loginKey/start`, {
+                headers: {
+                    Authorization: `${authService.getToken()}`
+                }
+            });
+            let asseResp;
+            asseResp = await startAuthentication(response.data);
+            const finishResponse = await axios.post(`${API_URL}/auth/loginKey/finish`, asseResp, {
+                headers: {
+                    Authorization: `${authService.getToken()}`
+                }
+            });
+            console.log(finishResponse.data);
+            return finishResponse.data;
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                throw Error('The operation was cancelled by the user');
+            } else if (error.name === 'NotAllowedError') {
+                throw Error('The operation was rejected by the user');
+            } else if (error.name === 'InvalidStateError') {
+                throw Error('Authenticator was probably already registered by user');
+            } else if (error.response) {
+                throw Error(error.response.data.message || 'Failed to register key');
+            } else {
+                throw Error(error.message || 'An error occurred');
+            }
         }
     },
     logout: () => {

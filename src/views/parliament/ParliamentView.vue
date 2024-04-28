@@ -8,6 +8,7 @@ export default {
     return {
       parliament: {},
       admin: {},
+      currentRole: this.$store.state.userRole,
     };
   },
   methods:{
@@ -17,7 +18,17 @@ export default {
           const parliament = await parliamentService.getParliament(this.$store.state.parliamentId);
           this.parliament = parliament;
         } else {
-          this.parliament = {name: "No parliament associated", description: "Join first a group to see the parliament content here."};
+          if(this.currentRole=='admin'){
+            this.parliament = {
+              name: "No parliament created",
+              description: "Create a parliament to start working with it."
+            };
+          } else {
+            this.parliament = {
+              name: "No parliament associated",
+              description: "Join first a group to see the parliament content here."
+            };
+          }
         }
       } catch (error) {
         console.error(error);
@@ -38,6 +49,9 @@ export default {
     async editParliament() {
       this.$router.push({ name: 'editParliament' });
     },
+    async createParliament() {
+      this.$router.push({ name: 'createParliament' });
+    },
   },
   mounted() {
     this.fetchParliament().then(() => {
@@ -53,9 +67,14 @@ export default {
     <div class="startinfo" v-if="parliament">
       <div class="editable">
         <h2>{{parliament.name}}</h2>
-        <div style="margin-left: 5rem"><button type="button" class="btn btn-secondary" @click="editParliament">
+        <div v-if="currentRole=='admin'" style="margin-left: 5rem"><button type="button" class="btn btn-secondary" @click="editParliament">
           Edit
         </button></div>
+        <div v-if="parliament.name == 'No parliament associated' && currentRole=='admin'">
+          <button type="button" class="btn btn-primary" @click="createParliament">
+            Create the parliament
+          </button>
+        </div>
       </div>
       <h4>{{parliament.description}}</h4>
       <h6 v-if="parliament.location">Localización: <strong>{{parliament.location}}</strong></h6>

@@ -16,7 +16,7 @@ const app = createApp(App)
 app.use(router)
 app.use(store)
 app.use(Toast, {
-    timeout: 10000,
+    timeout: 8000,
     position: 'bottom-center'
     })
 app.use(createBootstrap())

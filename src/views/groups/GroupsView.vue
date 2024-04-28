@@ -84,7 +84,7 @@ export default {
     <div v-else>
       <GroupSquare v-for="group in emptyGroups" :key="group.id" :group="group" />
       <div class="d-flex justify-content-between">
-        <div v-if="user.role !== 'admin'">
+        <div v-if="user.role !== 'admin'" class="d-flex justify-content-between">
         <GroupModal />
         <GroupDeleteModal />
         </div>

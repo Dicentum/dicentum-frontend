@@ -1,6 +1,7 @@
 // services/parliamentService.js
 import axios from 'axios';
 import authService from "@/services/authService.js";
+import {createRouterMatcher as Promise} from "vue-router/dist/vue-router.esm-browser.js";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -36,6 +37,19 @@ const parliamentService = {
             return response.data;
         } catch (error) {
             throw new Error(error.response.data.message || 'Failed to update parliament');
+        }
+    },
+    createParliamentiament: async (parliament) => {
+        try {
+            const response = await axios.post(`${API_URL}/parliaments`, parliament,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'Failed to create parliament');
         }
     },
 }
