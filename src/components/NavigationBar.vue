@@ -28,6 +28,9 @@ export default {
     email() {
       return this.$store.state.email;
     },
+    role(){
+      return this.$store.state.userRole;
+    },
     loggedIn() {
       return this.$store.state.loggedIn;
     },
@@ -53,6 +56,9 @@ export default {
       } else {
         this.$toast.error('Logout failed!');
       }
+    },
+    profile(){
+      router.push('/profile');
     },
     async fetchImage() {
       try {
@@ -90,25 +96,29 @@ export default {
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
         </ul>
         <div v-if="loggedIn">
-          <div class="dropdown">
-            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">
-              <div v-if="showImage">
-                <img :src="apiURL+'/files/'+image" alt="" width="32" height="32" class="rounded-circle me-2">
+          <BDropdown v-model="show" end text="{{ surname }}, {{ name }}" variant="light" no-caret offset="5">
+            <template #button-content>
+              <div class="user-info">
+                <div v-if="showImage">
+                  <img :src="apiURL+'/files/'+image" alt="" width="32" height="32" class="rounded-circle me-2">
+                </div>
+                <div v-else>
+                  <img :src="defaultUser" alt="" width="32" height="32" class="rounded-circle me-2">
+                </div>
+                <div>
+                  <strong>{{ surname }}</strong>, {{ name }}
+                </div>
               </div>
-              <div v-else>
-                <img :src="defaultUser" alt="" width="32" height="32" class="rounded-circle me-2">
-              </div>
-              <strong>{{ surname }}</strong>, {{ name }}
-            </a>
-            <ul class="dropdown-menu text-small shadow dropdown-menu-right">
-              <li><a class="dropdown-item">{{ username }}</a></li>
-              <li><a class="dropdown-item">{{ email }}</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><router-link class="dropdown-item" :to="{name: 'profile'}">Profile</router-link></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#" style="color: firebrick" @click="logout">Sign out</a></li>
-            </ul>
-          </div>
+            </template>
+            <BDropdownItem disabled>{{ username }}</BDropdownItem>
+            <BDropdownItem disabled>{{ email }}</BDropdownItem>
+            <BDropdownDivider />
+            <BDropdownItem disabled>{{ role }}</BDropdownItem>
+            <BDropdownDivider />
+            <BDropdownItem @click="profile">Profile</BDropdownItem>
+            <BDropdownDivider />
+            <BDropdownItem @click="logout" style="color: firebrick">Sign out</BDropdownItem>
+          </BDropdown>
         </div>
         <div v-else>
         <form class="d-flex gx-1" role="auth">
@@ -138,7 +148,10 @@ export default {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .dropdown-menu-right {
-  right: auto;
-  left: auto;
+  right: 10px;
+}
+.user-info {
+  display: flex;
+  align-items: center;
 }
 </style>

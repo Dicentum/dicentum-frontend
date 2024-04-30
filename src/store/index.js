@@ -70,7 +70,7 @@ const store = new Vuex.Store({
                 console.log('User profile:', userProfile);
                 commit('setUser', userProfile.user);
                 commit('setEmail', userProfile.email);
-                commit('setUserRole', userProfile.role);
+                commit('setUserRole', userProfile.userRole);
                 commit('setUserId', userProfile.id);
                 commit('setLoggedIn', true);
                 commit('setName', userProfile.name);
