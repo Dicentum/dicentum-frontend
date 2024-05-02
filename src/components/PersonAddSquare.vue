@@ -2,17 +2,17 @@
 import { useRouter } from 'vue-router';
 import userService from "@/services/userService.js";
 import groupService from "@/services/groupService.js";
-import router from "@/router/index.js";
 import {useToast} from "vue-toastification";
 
 export default {
-  name: 'PersonRequestSquare',
+  name: 'PersonAddSquare',
   props: {
     userId: String
   },
   data() {
     return {
-      user: null
+      user: null,
+      deleteProcess: false
     };
   },
   created() {
@@ -22,19 +22,37 @@ export default {
     async fetchUser() {
       try {
         this.user = await userService.getUser(this.userId);
+        const id = this.$route.params.id;
+        this.group = await groupService.getGroup(id);
+        if(this.group.users.includes(this.user._id)){
+          console.log("User already in group", this.user._id);
+          this.deleteProcess = true;
+        }
       } catch (error) {
         console.error(error);
       }
     },
     async approveUser() {
       try {
-        await groupService.acceptRequestGroup(this.$route.params.id, this.userId);
-        this.$router.go(-1);
-        this.$toast.success('Request of the user accepted!');
+          const updatedUsers = [...this.group.users, this.user._id];
+          await groupService.updateGroup(this.group._id, {users: updatedUsers});
+          await this.fetchUser();
+           this.$toast.success('User added!');
       } catch (error) {
         console.error(error);
       }
     },
+    async deleteUser(){
+      try {
+          const updatedUsers = this.group.users.filter(user => user !== this.user._id);
+          await groupService.updateGroup(this.group._id, {users: updatedUsers});
+          await this.fetchUser();
+          this.$toast.success('User removed!');
+          this.deleteProcess = false;
+      } catch (error) {
+        console.error(error);
+      }
+    }
   },
   mounted() {
     this.$toast = useToast();
@@ -51,7 +69,12 @@ export default {
       </div>
       <div class="other-info">
         <p class="text-start">{{ user.description }}</p>
-        <BButton variant="success" @click="approveUser">✓ Accept</BButton>
+        <div v-if="deleteProcess">
+          <BButton variant="danger" @click="deleteUser">✕ Remove</BButton>
+        </div>
+        <div v-else>
+        <BButton variant="success" @click="approveUser">✓ Add</BButton>
+        </div>
       </div>
     </div>
   </div>

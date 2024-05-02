@@ -9,6 +9,7 @@ export default {
       parliament: {},
       admin: {},
       currentRole: this.$store.state.userRole,
+      createParliament: false,
     };
   },
   methods:{
@@ -19,6 +20,7 @@ export default {
           this.parliament = parliament;
         } else {
           if(this.currentRole=='admin'){
+            this.createParliament = true;
             this.parliament = {
               name: "No parliament created",
               description: "Create a parliament to start working with it."
@@ -49,7 +51,7 @@ export default {
     async editParliament() {
       this.$router.push({ name: 'editParliament' });
     },
-    async createParliament() {
+    async createParliamentView() {
       this.$router.push({ name: 'createParliament' });
     },
   },
@@ -67,11 +69,11 @@ export default {
     <div class="startinfo" v-if="parliament">
       <div class="editable">
         <h2>{{parliament.name}}</h2>
-        <div v-if="currentRole=='admin'" style="margin-left: 5rem"><button type="button" class="btn btn-secondary" @click="editParliament">
+        <div v-if="!createParliament && currentRole=='admin'" style="margin-left: 5rem"><button type="button" class="btn btn-secondary" @click="editParliament">
           Edit
         </button></div>
-        <div v-if="parliament.name == 'No parliament associated' && currentRole=='admin'">
-          <button type="button" class="btn btn-primary" @click="createParliament">
+        <div v-if="createParliament && currentRole=='admin'">
+          <button type="button" class="btn btn-primary" @click="createParliamentView">
             Create the parliament
           </button>
         </div>

@@ -63,7 +63,13 @@ export default {
           const parliament = await parliamentService.getParliament(this.$store.state.parliamentId);
           this.parliament = parliament;
         } else {
-          this.parliament = {name: "No parliament associated", description: "Join first a group to see the parliament content here."};
+          if(this.$store.state.userRole === 'admin' && this.user.isAdminOf){
+            const parliament = await parliamentService.getParliament(this.user.isAdminOf);
+            this.parliament = parliament;
+            this.$store.commit('setParliamentId', this.parliament._id);
+          } else {
+            this.parliament = {name: "No parliament associated", description: "Create a parliament to start working with it."};
+          }
         }
       } catch (error) {
         console.error(error);

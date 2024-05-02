@@ -16,6 +16,7 @@ import DebatesView from "@/views/debates/DebatesView.vue";
 import EditGroupView from "@/views/groups/EditGroupView.vue";
 import CreateGroupView from "@/views/groups/CreateGroupView.vue";
 import CreateParliamentView from "@/views/parliament/CreateParliamentView.vue";
+import GroupManageView from "@/views/groups/GroupManageView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +69,14 @@ const router = createRouter({
       path: '/groups/:id',
       name: 'groupsDetails',
       component: GroupDetailView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/groups/:id/manage',
+      name: 'groupsManage',
+      component: GroupManageView,
       meta: {
         requiresAuth: true
       }

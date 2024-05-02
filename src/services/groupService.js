@@ -67,7 +67,7 @@ const groupService = {
     },
     acceptRequestGroup: async (groupId, userId) => {
         try {
-            const response = await axios.post(`${API_URL}/groups/approve/${groupId}/${userId}`,
+            const response = await axios.post(`${API_URL}/groups/approve/${groupId}/${userId}`,{},
                 {
                     headers: {
                         Authorization: `${authService.getToken()}`
@@ -102,6 +102,19 @@ const groupService = {
             return response.data;
         } catch (error) {
             throw new Error(error.response.data.message || 'Failed to update group');
+        }
+    },
+    deleteGroup: async (id) => {
+        try {
+            const response = await axios.delete(`${API_URL}/groups/${id}`,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'Failed to delete group');
         }
     },
 }

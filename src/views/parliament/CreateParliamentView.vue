@@ -18,7 +18,7 @@ export default {
         if(this.$store.state.parliamentId){
           this.parliament = await parliamentService.getParliament(this.$store.state.parliamentId);
         } else {
-          this.parliament = {name: "No parliament associated", description: "Join first a group to see the parliament content here."};
+          this.parliament = {name: "", description: "", admin: this.$store.state.userid};
         }
       } catch (error) {
         console.error(error);
@@ -26,7 +26,8 @@ export default {
     },
     async createParliament() {
       try {
-        await parliamentService.createParliamentiament(this.parliament);
+        const response = await parliamentService.createParliamentiament(this.parliament);
+        this.$store.commit('setParliamentId', response._id);
         this.$router.push({ name: 'parliament' });
         this.$toast.success('Parliament created!');
       } catch (error) {

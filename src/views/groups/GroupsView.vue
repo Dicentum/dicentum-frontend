@@ -10,7 +10,8 @@ export default {
   name: 'GroupsView',
   data() {
     return {
-      user: null,
+      user:  this.$store.state.userid,
+      userRole: this.$store.state.userRole,
       groups: [],
       showButton: false,
       showModal: false,
@@ -31,9 +32,13 @@ export default {
       try {
         const groupIds = await groupService.getGroupsRelated(this.$store.state.parliamentId);
         if(groupIds===undefined){
+          if(this.userRole !== 'admin'){
           this.emptyGroups = [{name: "No groups associated", description: "Join first a group to see the content here"}];
-          this.user = this.$store.state.userid;
           this.showButton = true;
+          } else {
+            this.emptyGroups = [{name: "No groups associated", description: "Create a parliament to start working with it."}];
+            this.showButton = false;
+          }
         } else {
           const groupPromises = groupIds.map(groupId => groupService.getGroup(groupId));
           this.groups = await Promise.all(groupPromises);
@@ -73,9 +78,9 @@ export default {
   <div class="container">
     <div class="editable">
       <h2>Parliamentary Groups:</h2>
-      <div style="margin-left: 5rem" v-if="condition"><button type="button" class="btn btn-primary" @click="createGroup">
+      <button type="button" class="btn btn-primary" @click="createGroup" v-if="condition">
         Create new group
-      </button></div>
+      </button>
     </div>
     <p>Here you can see the parliamentary groups associated with the current parliament</p>
     <div class="group-container" v-if="emptyGroups.length === 0">
@@ -83,12 +88,6 @@ export default {
     </div>
     <div v-else>
       <GroupSquare v-for="group in emptyGroups" :key="group.id" :group="group" />
-      <div class="d-flex justify-content-between">
-        <div v-if="user.role !== 'admin'" class="d-flex justify-content-between">
-        <GroupModal />
-        <GroupDeleteModal />
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -100,15 +99,10 @@ export default {
 .group-container {
   margin-bottom: 2rem;
 }
-.container p:first-of-type {
-  margin-bottom: 0.5em; /* Adjust as needed */
-}
-.container p:last-of-type {
-  margin-top: 0.5em; /* Adjust as needed */
-}
-.editable{
+.editable {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Ensures elements are pushed to the far sides */
   align-items: center;
+  width: 100%; /* Make sure the container spans the full width */
 }
 </style>
