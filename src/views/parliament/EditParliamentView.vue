@@ -46,6 +46,7 @@ export default {
     <div class="startinfo">
       <div class="editable" v-if="parliament">
         <h2>Edit Parliament</h2>
+        <br>
         <form @submit.prevent="updateParliament">
           <div class="form-floating mb-3">
             <input type="text" class="form-control" placeholder="Name" v-model="parliament.name">
@@ -63,7 +64,7 @@ export default {
             <input type="number" class="form-control" placeholder="Seats" v-model="parliament.totalSeats">
             <label for="floatingInput">Seats</label>
           </div>
-          <!-- Add the admin field here in the future -->
+          <br>
           <div class="d-flex justify-content-between">
             <button class="btn btn-secondary w-45 py-2" type="button" @click="cancelUpdate">Cancel</button>
             <button class="btn btn-primary w-45 py-2" type="submit">Update</button>

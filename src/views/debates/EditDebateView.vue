@@ -6,24 +6,44 @@ import userService from "@/services/userService.js";
 import debatesService from "@/services/debatesService.js";
 
 export default {
-  name: 'CreateDebateView',
+  name: 'EditDebateView',
   data() {
     return {
-      debate: {isClosed: false},
+      debate: {},
       condition: false,
     }
   },
   methods: {
-    cancelCreate() {
+    formatDateToDateTimeLocal(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = ('0' + (date.getMonth() + 1)).slice(-2);
+      const day = ('0' + date.getDate()).slice(-2);
+      const hours = ('0' + date.getHours()).slice(-2);
+      const minutes = ('0' + date.getMinutes()).slice(-2);
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    },
+    cancelEdit() {
       this.$router.go(-1);
     },
-    async createDebate() {
+    async fetchDebate(){
+      try {
+        const id = this.$route.params.id;
+        const debate = await debatesService.getDebate(id);
+        debate.date = this.formatDateToDateTimeLocal(debate.date);
+        debate.startDateVote = this.formatDateToDateTimeLocal(debate.startDateVote);
+        debate.endDateVote = this.formatDateToDateTimeLocal(debate.endDateVote);
+        this.debate = debate;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async editDebate() {
       try {
         if(this.condition){
-          this.debate.parliament = this.$store.state.parliamentId;
-          await debatesService.createDebate(this.debate);
+          await debatesService.editDebate(this.debate._id, this.debate);
           this.$router.go(-1);
-          this.$toast.success('Debate created!');
+          this.$toast.success('Debate edited!');
         } else {
           this.$router.push({ name: 'debates' });
           this.$toast.error('You are not allowed to do that');
@@ -51,7 +71,9 @@ export default {
   },
   mounted() {
     this.$toast = useToast();
-    this.isAdminAndParliamentCreated();
+    this.fetchDebate().then(() => {
+      this.isAdminAndParliamentCreated();
+    });
   }
 };
 </script>
@@ -60,8 +82,9 @@ export default {
   <div class="container">
     <div class="startinfo">
       <div class="editable" v-if="condition">
-        <h2>Create a new debate</h2>
-        <form @submit.prevent="createDebate">
+        <h2>Edit an existent debate</h2>
+        <br>
+        <form @submit.prevent="editDebate">
           <div class="form-floating mb-3">
             <input type="text" class="form-control" placeholder="Name" v-model="debate.title">
             <label for="floatingInput">Name</label>
@@ -105,8 +128,8 @@ export default {
           </div>
           </transition>
           <div class="d-flex justify-content-between">
-            <button class="btn btn-secondary w-45 py-2" type="button" @click="cancelCreate">Cancel</button>
-            <button class="btn btn-primary w-45 py-2" type="submit">Create</button>
+            <button class="btn btn-secondary w-45 py-2" type="button" @click="cancelEdit">Cancel</button>
+            <button class="btn btn-primary w-45 py-2" type="submit">Edit</button>
           </div>
         </form>
       </div>

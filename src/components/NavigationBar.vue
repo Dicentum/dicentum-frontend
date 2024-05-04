@@ -18,7 +18,8 @@ export default {
       apiURL: API_URL,
       image: null,
       avatar: null,
-      showImage: false
+      showImage: false,
+      show: false
     }
   },
   computed: {

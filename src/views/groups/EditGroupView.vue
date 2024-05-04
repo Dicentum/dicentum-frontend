@@ -57,6 +57,7 @@ export default {
     <div class="startinfo">
       <div class="editable" v-if="group">
         <h2>Edit Group</h2>
+        <br>
         <form @submit.prevent="updateGroup">
           <div class="form-floating mb-3">
             <input type="text" class="form-control" placeholder="Name" v-model="group.name">
@@ -74,6 +75,7 @@ export default {
             <label>Logo</label>
             <input type="file" class="form-control" @change="onFileChange" accept="image/png, image/jpeg">
           </div>
+          <br>
           <div class="d-flex justify-content-between">
             <button class="btn btn-secondary w-45 py-2" type="button" @click="cancelUpdate">Cancel</button>
             <button class="btn btn-primary w-45 py-2" type="submit">Update</button>
@@ -81,7 +83,10 @@ export default {
         </form>
       </div>
       <div v-else>
-        <BSpinner />
+        <BButton variant="primary" disabled>
+          <BSpinner small type="grow" />
+          Loading...
+        </BButton>
       </div>
     </div>
   </div>

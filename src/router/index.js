@@ -17,6 +17,10 @@ import EditGroupView from "@/views/groups/EditGroupView.vue";
 import CreateGroupView from "@/views/groups/CreateGroupView.vue";
 import CreateParliamentView from "@/views/parliament/CreateParliamentView.vue";
 import GroupManageView from "@/views/groups/GroupManageView.vue";
+import CreateDebateView from "@/views/debates/CreateDebateView.vue";
+import DebateDetailView from "@/views/debates/DebateDetailView.vue";
+import EditDebateView from "@/views/debates/EditDebateView.vue";
+import ManageTimersView from "@/views/debates/ManageTimersView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -114,7 +118,7 @@ const router = createRouter({
         },
     },
     {
-      path: '/editGroup/:id',
+      path: '/groups/:id/edit',
       name: 'editGroup',
       component: EditGroupView,
       meta: {
@@ -128,6 +132,38 @@ const router = createRouter({
             meta: {
                 requiresAuth: true
             },
+    },
+    {
+      path: '/debates/create',
+      name: 'createDebate',
+      component: CreateDebateView,
+      meta: {
+        requiresAuth: true
+      },
+    },
+    {
+      path: '/debates/:id',
+      name: 'debateDetails',
+      component: DebateDetailView,
+      meta: {
+        requiresAuth: true
+      },
+    },
+    {
+      path: '/debates/:id/edit',
+      name: 'editDebate',
+      component: EditDebateView,
+      meta: {
+        requiresAuth: true
+      },
+    },
+    {
+      path: '/debates/:id/timers',
+      name: 'manageTimers',
+      component: ManageTimersView,
+      meta: {
+        requiresAuth: true
+      },
     },
     {
       path: '/:pathMatch(.*)*',

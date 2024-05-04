@@ -30,6 +30,21 @@ export default {
     const repeatPasswordTouched = ref(false);
     const doesNotMatch = computed(() => data.password !== data.repeatPassword);
 
+    const termsAccepted = ref(false);
+
+    const termsAndConditions = ref(''); // Initialize empty string
+
+    const fetchTermsAndConditions = async () => {
+      try {
+        const response = await fetch('src/assets/termsAndConditions.html');
+        termsAndConditions.value = await response.text();
+      } catch (error) {
+        console.error('Error fetching terms and conditions:', error);
+      }
+    };
+
+    fetchTermsAndConditions();
+
     const submit = async () => {
       try {
         if (!isLengthValid.value || !hasUppercase.value || !hasLowercase.value || !hasDigit.value) {
@@ -39,6 +54,10 @@ export default {
         if (doesNotMatch.value) {
           toast.error('Passwords do not match');
           throw new Error('Passwords do not match');
+        }
+        if (!termsAccepted.value) {
+          toast.error('Please accept the terms and conditions');
+          throw new Error('Please accept the terms and conditions');
         }
 
         const userData = {
@@ -66,7 +85,9 @@ export default {
       hasDigit,
       doesNotMatch,
       repeatPasswordTouched,
-      passwordTouched
+      passwordTouched,
+      termsAccepted,
+      termsAndConditions
     };
   },
 };
@@ -127,8 +148,16 @@ export default {
             </div>
           </div>
         </div>
-
-        <button class="btn btn-primary w-100 py-2" type="submit">Submit</button>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" v-model="termsAccepted" id="termsCheck">
+          <label class="form-check-label" for="termsCheck">
+            I accept the <b-button v-b-modal.modal-terms class="btn-light btn-sm">Terms and Conditions</b-button>
+          </label>
+        </div>
+        <BModal id="modal-terms" scrollable title="Terms and Conditions" ok-only>
+          <div v-html="termsAndConditions"></div>
+        </BModal>
+        <button class="btn btn-primary w-100 py-2" type="submit" :disabled="!termsAccepted">Submit</button>
         <p class="mt-5 mb-3 text-body-secondary">Dicentum 2024</p>
       </form>
     </div>
@@ -147,5 +176,8 @@ export default {
 
 .password-indicator span.valid {
   color: green;
+}
+.modal-content {
+  max-width: 90%; /* Adjust the max-width as needed */
 }
 </style>

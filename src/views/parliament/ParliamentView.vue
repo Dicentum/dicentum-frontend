@@ -1,9 +1,11 @@
 <script>
 import parliamentService from "@/services/parliamentService.js";
 import userService from "@/services/userService.js";
+import DebateSquare from "@/components/DebateSquare.vue";
 
 export default {
   name: 'ParliamentView',
+  components: {DebateSquare},
   data() {
     return {
       parliament: {},
@@ -91,9 +93,9 @@ export default {
       </BButton>
     </div>
     <div class="opendebates" v-if="admin.role==='admin'">
-      <h3>Debates ongoing:</h3>
-      <p>In this section you will see the open debates</p>
-      {{parliament.debates}}
+      <h3>Debates closed:</h3>
+      <p>In this section you will see the closed debates</p>
+      <DebateSquare class="debate-square" v-for="debate in parliament.debates" :key="debate" :debate="debate" :do-not-display-if-open="true"/>
     </div>
   </div>
 </template>
@@ -112,5 +114,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.debate-square {
+  margin-bottom: 2rem;
 }
 </style>
