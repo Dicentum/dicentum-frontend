@@ -92,6 +92,12 @@ export default {
           <div v-if="debate.startDateVote"><strong>Voting opens: </strong>{{ formatDate(debate.startDateVote) }}</div>
           <div v-if="debate.endDateVote"><strong>Voting closes: </strong>{{ formatDate(debate.endDateVote) }}</div>
         </div>
+        <div class="existents">
+          <h4>Timers: </h4>
+          <div v-if="debate.timers && debate.timers.length">
+            <TimerSquare v-for="timer in debate.timers" :key="timer" :timer="timer" class="timer-container"/>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -147,6 +153,12 @@ export default {
 .presential-pill {
   background-color: mediumseagreen;
   color: white;
+}
+.existents{
+  margin-top: 2rem;
+}
+.timer-container {
+  margin-bottom: 2rem;
 }
 </style>
 
