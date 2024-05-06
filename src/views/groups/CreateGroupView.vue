@@ -18,17 +18,16 @@ export default {
     },
     async createGroup() {
       try {
-        const groupData = {
-          name: this.group.name,
-          description: this.group.description,
-          color: this.group.color,
-          seats: this.group.seats,
-          parliament: this.$store.state.parliamentId,
-        };
+        const formData = new FormData();
+        Object.entries(this.group).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        formData.append('parliament', this.$store.state.parliamentId);
         if (this.file) {
-          groupData.logo = this.file;
+          formData.append('file', this.file);
         }
-        await groupService.createGroup(groupData);
+        console.log(formData);
+        await groupService.createGroup(formData);
         this.$router.go(-1);
         this.$toast.success('Group created!');
       } catch (error) {
