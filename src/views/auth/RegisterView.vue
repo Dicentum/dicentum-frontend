@@ -15,11 +15,13 @@ export default {
       password: '',
       repeatPassword: '',
       name: '',
-      surname: ''
+      surname: '',
     });
 
     const router = useRouter();
     const toast = useToast();
+
+    const isLoading = ref(false);
 
     const isLengthValid = computed(() => data.password.length >= 8);
     const hasUppercase = computed(() => /[A-Z]/.test(data.password));
@@ -46,6 +48,7 @@ export default {
     fetchTermsAndConditions();
 
     const submit = async () => {
+      isLoading.value = true;
       try {
         if (!isLengthValid.value || !hasUppercase.value || !hasLowercase.value || !hasDigit.value) {
           toast.error('Password does not meet the requirements');
@@ -68,9 +71,11 @@ export default {
         };
 
         const register = await authService.register(userData);
+        isLoading.value = false;
         toast.success('User registered successfully!');
         await router.push(`/validate/${register.id}`);
       } catch (error) {
+        isLoading.value = false;
         toast.error(error.message);
       }
     };
@@ -87,7 +92,8 @@ export default {
       repeatPasswordTouched,
       passwordTouched,
       termsAccepted,
-      termsAndConditions
+      termsAndConditions,
+      isLoading,
     };
   },
 };
@@ -96,6 +102,11 @@ export default {
 <template>
   <main class="form-signin">
     <div class="container">
+      <div v-if="isLoading" class="loading-overlay">
+        <div class="loading-box">
+          <BSpinner class="spinner-loading-class"/> Loading...
+        </div>
+      </div>
       <form @submit.prevent="submit">
         <img class="mb-4" :src="icon" alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">Please register</h1>

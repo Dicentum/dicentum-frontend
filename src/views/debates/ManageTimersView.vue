@@ -20,41 +20,45 @@ export default {
       groups: [],
       selectedGroup: null,
       users: [],
-      selectedUser: null,
+      selectedUser: {},
     }
   },
   methods: {
     async submitForm() {
-      const formatEndDate = (date) => {
-        // Get the local year, month, day, hours, and minutes
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // JavaScript months are 0-based
-        const day = date.getDate().toString().padStart(2, '0');
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
+      try {
+        const formatEndDate = (date) => {
+          // Get the local year, month, day, hours, and minutes
+          const year = date.getFullYear();
+          const month = (date.getMonth() + 1).toString().padStart(2, '0');
+          const day = date.getDate().toString().padStart(2, '0');
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
 
-        // Construct the date string in YYYY-MM-DDTHH:MM format
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
-      };
+          return `${year}-${month}-${day}T${hours}:${minutes}`;
+        };
 
-      const startTime = new Date(this.timer.start);
-      const endTimeParts = this.endTime.split(':');
+        const startTime = new Date(this.timer.start);
+        const endTimeParts = this.endTime.split(':');
 
-      const endDateTime = new Date(startTime);
-      endDateTime.setHours(endTimeParts[0]);
-      endDateTime.setMinutes(endTimeParts[1]);
+        const endDateTime = new Date(startTime);
+        endDateTime.setHours(endTimeParts[0]);
+        endDateTime.setMinutes(endTimeParts[1]);
 
-      const myTimer = {
-        start: this.timer.start,
-        end: formatEndDate(endDateTime),
-        user: this.selectedUser,
-        debate: this.debate._id
-      };
+        const myTimer = {
+          start: this.timer.start,
+          end: formatEndDate(endDateTime),
+          user: this.selectedUser.id,
+          debate: this.debate._id
+        };
 
-      await timerService.createTimer(myTimer);
-      this.modal = false;
-      this.$toast.success('Timer created!');
-      await this.fetchDebateData();
+        await timerService.createTimer(myTimer);
+        this.modal = false;
+        this.$toast.success('Timer created!');
+        await this.fetchDebateData();
+      } catch (error) {
+        console.error(error);
+        this.$toast.error('Failed to create timer');
+      }
     },
     async fetchGroup(groupId) {
       try {
@@ -102,6 +106,12 @@ export default {
   <div class="container">
     <div class="startinfo">
       <div class="editable" v-if="debate">
+        <BBreadcrumb>
+          <BBreadcrumbItem @click="this.$router.push({path: '/dashboard'});"> Dashboard </BBreadcrumbItem>
+          <BBreadcrumbItem @click="this.$router.push({name: 'debates'});">Debates</BBreadcrumbItem>
+          <BBreadcrumbItem @click="this.$router.push({name: 'debateDetails'});">Details</BBreadcrumbItem>
+          <BBreadcrumbItem active>Manage Timers</BBreadcrumbItem>
+        </BBreadcrumb>
         <h2>Manage timers in {{debate.title}}</h2>
         <br>
         <BButton @click="modal = !modal"> Create new timer </BButton>
@@ -127,7 +137,7 @@ export default {
             <transition name="fade">
               <div class="form-floating mb-3" v-if="selectedGroup">
                 <select class="form-select" id="floatingSelect" aria-label="User selector" v-model="selectedUser">
-                  <option v-for="user in users" :key="user.id" :value="user.id">
+                  <option v-for="user in users" :key="user.id" :value="user">
                     {{ user.surname }}, {{ user.name }}
                   </option>
                 </select>

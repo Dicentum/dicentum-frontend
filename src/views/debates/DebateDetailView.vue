@@ -17,12 +17,36 @@ export default {
     return {
       debate: null,
       userRole: this.$store.state.userRole,
+      onlyMyTimers: false,
+      isLoading: false
     };
   },
   created() {
     this.fetchDebateData();
   },
   methods: {
+    async tallyVotes() {
+      this.isLoading = true;
+      try {
+        await debateService.doTally(this.debate._id);
+        this.isLoading = false;
+        this.$toast.success('Votes tallied successfully!');
+      } catch (error) {
+        this.isLoading = false;
+        this.$toast.error(error.message);
+        console.error(error);
+      }
+      await this.fetchDebateData();
+    },
+    toVoteDebate() {
+      this.$router.push({ name: 'voteDebate', params: { id: this.debate._id } });
+    },
+    showAllTimers() {
+      this.onlyMyTimers = !this.onlyMyTimers;
+    },
+    toResults() {
+      this.$router.push({ name: 'resultDebate', params: { id: this.debate._id } });
+    },
     async fetchDebateData() {
       try {
         const id = this.$route.params.id;
@@ -67,7 +91,17 @@ export default {
 </script>
 
 <template>
+  <div v-if="isLoading" class="loading-overlay">
+    <div class="loading-box">
+      <BSpinner class="spinner-loading-class"/> Loading...
+    </div>
+  </div>
   <div v-if="debate">
+    <BBreadcrumb>
+      <BBreadcrumbItem @click="this.$router.push({path: '/dashboard'});"> Dashboard </BBreadcrumbItem>
+      <BBreadcrumbItem @click="this.$router.push({name: 'debates'});">Debates</BBreadcrumbItem>
+      <BBreadcrumbItem active>Details</BBreadcrumbItem>
+    </BBreadcrumb>
     <div class="debate-details">
       <div class="group-info">
         <div class="editable">
@@ -76,7 +110,8 @@ export default {
           <div v-if="userRole == 'admin'">
           <BDropdown end text="Options" variant="secondary" class="options-dropdown">
             <BDropdownItem @click="editDebate">Edit</BDropdownItem>
-            <BDropdownItem v-if="debate.type === 'presential'" @click="manageTimers">Manage timers</BDropdownItem>
+            <BDropdownItem v-if="debate.type === 'presential' && userRole=='admin'" @click="manageTimers">Manage timers</BDropdownItem>
+            <BDropdownItem v-if="!debate.isClosed && userRole=='admin' && Date.now() > new Date(debate.endDateVote)" @click="tallyVotes">Tally votes</BDropdownItem>
             <BDropdownDivider />
             <BDropdownItem @click="deleteDebate" style="color: firebrick">Delete</BDropdownItem>
           </BDropdown>
@@ -88,14 +123,39 @@ export default {
         <div :class="{ 'online-pill': debate.type === 'online', 'presential-pill': debate.type === 'presential' }">
           {{ debate.type.toUpperCase() }}
         </div>
+        <div class="vote-container">
         <div>
           <div v-if="debate.startDateVote"><strong>Voting opens: </strong>{{ formatDate(debate.startDateVote) }}</div>
           <div v-if="debate.endDateVote"><strong>Voting closes: </strong>{{ formatDate(debate.endDateVote) }}</div>
         </div>
-        <div class="existents">
+          <div>
+            <div v-if="!debate.isClosed && Date.now() > new Date(debate.startDateVote) && Date.now() < new Date(debate.endDateVote)">
+              <BButton size="lg" variant="primary" @click="toVoteDebate">Vote</BButton>
+            </div>
+            <div v-else>
+              <BButton size="lg" variant="info" @click="toResults">Results</BButton>
+            </div>
+          </div>
+        </div>
+        <div class="filters-container">
           <h4>Timers: </h4>
+          <div class="filters">
+            <div v-if="onlyMyTimers==true">
+              <BButton size="sm" pill variant="outline-secondary" @click="showAllTimers">All the timers</BButton>
+            </div>
+            <div v-else>
+              <BButton size="sm" pill variant="outline-primary" @click="showAllTimers">Only my timer</BButton>
+            </div>
+          </div>
+          </div>
+        <div class="timers">
           <div v-if="debate.timers && debate.timers.length">
+            <div v-if="onlyMyTimers">
+              <TimerSquare v-for="timer in debate.timers" :key="timer" :timer="timer" :onlyMyTimers="true" class="timer-container"/>
+            </div>
+            <div v-else>
             <TimerSquare v-for="timer in debate.timers" :key="timer" :timer="timer" class="timer-container"/>
+            </div>
           </div>
         </div>
       </div>
@@ -127,7 +187,7 @@ export default {
 }
 
 .options-dropdown {
-  margin-left: auto; /* Pushes the dropdown to the right */
+  margin-left: auto;
 }
 .closed-label {
   background-color: firebrick;
@@ -139,7 +199,7 @@ export default {
   margin-right: 10px;
 }
 .online-pill, .presential-pill {
-  display: inline-block; /* Add this line */
+  display: inline-block;
   padding: 5px;
   border-radius: 25px;
   font-size: 0.6em;
@@ -154,11 +214,22 @@ export default {
   background-color: mediumseagreen;
   color: white;
 }
-.existents{
-  margin-top: 2rem;
-}
 .timer-container {
   margin-bottom: 2rem;
+}
+.filters-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+.timers{
+  margin-top: 2rem;
+}
+.vote-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
 

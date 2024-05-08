@@ -73,7 +73,6 @@ const authService = {
                     Authorization: `${authService.getToken()}`
                 }
             });
-            console.log(finishResponse.data);
             return finishResponse.data;
         } catch (error) {
             if (error.name === 'AbortError') {
@@ -115,7 +114,7 @@ const authService = {
                 authService.logout();
                 store.commit('logOut');
                 if (expired) {
-                    alert("⚠︎ Your current session has expired. Please log in again.");
+                    alert("⚠ Your current session has expired. Please log in again.");
                 }
                 return false;
             } else {

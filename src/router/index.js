@@ -21,6 +21,8 @@ import CreateDebateView from "@/views/debates/CreateDebateView.vue";
 import DebateDetailView from "@/views/debates/DebateDetailView.vue";
 import EditDebateView from "@/views/debates/EditDebateView.vue";
 import ManageTimersView from "@/views/debates/ManageTimersView.vue";
+import VotingView from "@/views/debates/VotingView.vue";
+import ResultView from "@/views/debates/ResultView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -161,6 +163,22 @@ const router = createRouter({
       path: '/debates/:id/timers',
       name: 'manageTimers',
       component: ManageTimersView,
+      meta: {
+        requiresAuth: true
+      },
+    },
+    {
+      path: '/vote/:id',
+      name: 'voteDebate',
+      component: VotingView,
+      meta: {
+            requiresAuth: true
+        },
+    },
+    {
+      path: '/result/:id',
+      name: 'resultDebate',
+      component: ResultView,
       meta: {
         requiresAuth: true
       },

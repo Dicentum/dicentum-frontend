@@ -70,7 +70,6 @@ export default {
         }
       } catch (error) {
         console.error(error.message);
-        this.$toast.error(error.message);
       }
     },
   },

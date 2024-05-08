@@ -27,14 +27,15 @@ export default {
     async fetchDebate() {
       try {
         const debate = await debateService.getDebate(this.debate);
-        if (this.doNotDisplayIfOpen && !debate.isClosed) {
-          this.display = false;
-          return;
-        } else {
-          this.display = true;
-          this.debateObject = debate;
+        if(debate){
+          if (this.doNotDisplayIfOpen && !debate.isClosed) {
+            this.display = false;
+            return;
+          } else {
+            this.display = true;
+            this.debateObject = debate;
+          }
         }
-
       } catch (error) {
         console.error(error);
       }

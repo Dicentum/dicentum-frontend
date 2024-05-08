@@ -8,10 +8,6 @@ import fs from 'fs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-/*  server: { https: {
-    key: fs.readFileSync('certificates/localhost-key.pem'),
-    cert: fs.readFileSync('certificates/localhost.pem')
-    } },*/
   plugins: [
     vue(),
     Components({

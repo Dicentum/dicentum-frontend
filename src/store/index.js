@@ -67,7 +67,6 @@ const store = new Vuex.Store({
         async fetchUserProfile({ commit }) {
             try {
                 const userProfile = await authService.getAuthData();
-                console.log('User profile:', userProfile);
                 commit('setUser', userProfile.user);
                 commit('setEmail', userProfile.email);
                 commit('setUserRole', userProfile.userRole);
@@ -96,7 +95,6 @@ const store = new Vuex.Store({
             commit('setLoggedIn', loggedIn);
         },
         logOut({ commit }) {
-            console.log('Logging out...')
             commit('logOut');
             authService.logout();
         },

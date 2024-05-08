@@ -20,6 +20,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    onlyMyTimers: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
@@ -56,6 +61,10 @@ export default {
     async fetchTimer() {
       try {
         const timer = await timerService.getTimer(this.timer);
+        if(this.onlyMyTimers && timer.user !== this.$store.state.userid){
+          this.display = false;
+          return;
+        }
         if (this.doNotDisplayIfPassed && timer.end < new Date()) {
           this.display = false;
           return;
@@ -69,8 +78,10 @@ export default {
     },
     async fetchUser() {
       try {
-        const user = await userService.getUser(this.timerObject.user);
-        this.user = user;
+        if(this.display) {
+          const user = await userService.getUser(this.timerObject.user);
+          this.user = user;
+        }
       } catch (error) {
         console.error(error);
       }
@@ -123,8 +134,8 @@ export default {
     this.fetchTimer().then(() => {
       this.fetchUser();
       this.startTimerInterval();
-      this.updateTimeDifference(); // Initially calculate the time difference
-    });
+      this.updateTimeDifference();
+  });
   },
   beforeUnmount() {
     this.stopTimerInterval();

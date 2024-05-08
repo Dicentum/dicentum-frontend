@@ -125,6 +125,12 @@ export default {
                 <label for="floatingInput">Voting end date</label>
               </div>
             </div>
+              <div>
+                <div class="form-floating mb-3">
+                  <textarea class="form-control" placeholder="Description" v-model="debate.votingDescription" style="height: 100px"></textarea>
+                  <label for="floatingTextarea2">Voting description</label>
+                </div>
+              </div>
           </div>
           </transition>
           <div class="d-flex justify-content-between">

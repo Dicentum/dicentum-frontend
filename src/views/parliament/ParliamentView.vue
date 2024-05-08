@@ -2,16 +2,21 @@
 import parliamentService from "@/services/parliamentService.js";
 import userService from "@/services/userService.js";
 import DebateSquare from "@/components/DebateSquare.vue";
+import groupService from "@/services/groupService.js";
+import graph from "@/components/Graph.vue";
 
 export default {
   name: 'ParliamentView',
-  components: {DebateSquare},
+  components: {DebateSquare, graph},
   data() {
     return {
       parliament: {},
       admin: {},
       currentRole: this.$store.state.userRole,
       createParliament: false,
+      groups: [],
+      callGraph: false,
+      graphData: [],
     };
   },
   methods:{
@@ -50,6 +55,21 @@ export default {
         console.error(error);
       }
     },
+    async fetchGroups() {
+      try {
+        let seatsAssigned = 0;
+        for (const group of this.parliament.parliamentaryGroups) {
+          const groupData = await groupService.getGroup(group);
+          this.groups.push(groupData);
+          this.graphData.push({seats: groupData.seats, color: groupData.color});
+          seatsAssigned += groupData.seats;
+        }
+        this.graphData.push({seats: this.parliament.totalSeats - seatsAssigned, color: "#6e757c"});
+        this.callGraph = true;
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async editParliament() {
       this.$router.push({ name: 'editParliament' });
     },
@@ -59,7 +79,9 @@ export default {
   },
   mounted() {
     this.fetchParliament().then(() => {
-      this.fetchAdmin();
+      this.fetchAdmin().then(() => {
+        this.fetchGroups();
+      });
     });
   },
 };
@@ -92,6 +114,17 @@ export default {
         Loading...
       </BButton>
     </div>
+    <div class="current-groups" v-if="callGraph && graphData">
+      <h3>Current parliament:</h3>
+      <graph :data="graphData"></graph>
+    </div>
+    <div v-else>
+      <BButton variant="primary" disabled>
+        <BSpinner small type="grow" />
+        Loading...
+      </BButton>
+    </div>
+    <br>
     <div class="opendebates" v-if="admin.role==='admin'">
       <h3>Debates closed:</h3>
       <p>In this section you will see the closed debates</p>

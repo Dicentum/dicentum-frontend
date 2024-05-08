@@ -72,8 +72,7 @@ export default {
           </div>
           <div class="form-floating mb-3">
             <select class="form-control" v-model="debate.type">
-              <option disabled value="">Please select a debate mode</option>
-              <option value="online">Online</option>
+              <option disabled value="online">Online</option>
               <option value="presential">Presential</option>
             </select>
             <label for="floatingSelect">Mode</label>
@@ -102,6 +101,12 @@ export default {
                 <label for="floatingInput">Voting end date</label>
               </div>
             </div>
+              <div>
+              <div class="form-floating mb-3">
+                <textarea class="form-control" placeholder="Description" v-model="debate.votingDescription" style="height: 100px"></textarea>
+                <label for="floatingTextarea2">Voting description</label>
+              </div>
+              </div>
           </div>
           </transition>
           <div class="d-flex justify-content-between">

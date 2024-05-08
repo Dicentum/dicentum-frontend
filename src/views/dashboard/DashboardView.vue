@@ -45,7 +45,7 @@ export default {
     },
     async fetchGroup() {
       try {
-        if(this.user.parliamentaryGroup){
+        if(this.user){
           const group = await groupService.getGroup(this.user.parliamentaryGroup);
           this.group = group;
           this.$store.commit('setGroupId', group._id);
@@ -59,7 +59,7 @@ export default {
     },
     async fetchParliament() {
       try {
-        if(this.user.parliamentaryGroup){
+        if(this.user){
           const parliament = await parliamentService.getParliament(this.$store.state.parliamentId);
           this.parliament = parliament;
         } else {

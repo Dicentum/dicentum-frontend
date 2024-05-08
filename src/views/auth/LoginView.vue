@@ -11,11 +11,13 @@ export default {
     return {
       username: '',
       password: '',
-      icon: icon
+      icon: icon,
+      isLoading: false
     };
   },
   methods: {
     async loginUser() {
+      this.isLoading = true;
       try {
         const credentials = {
           username: this.username,
@@ -23,9 +25,11 @@ export default {
         };
         await authService.login(credentials);
         this.$store.dispatch('fetchUserProfile');
+        this.isLoading = false;
         this.$toast.success('Login successful!');
         await router.push('/dashboard');
       } catch (error) {
+        this.isLoading = false;
         this.$toast.error(error.message);
       }
     }
@@ -39,6 +43,11 @@ export default {
 <template>
   <main class="form-signin">
     <div class="form-container">
+      <div v-if="isLoading" class="loading-overlay">
+        <div class="loading-box">
+          <BSpinner class="spinner-loading-class"/> Loading...
+        </div>
+      </div>
         <form @submit.prevent="loginUser">
           <img class="mb-4" :src="icon" alt="" width="72" height="57">
           <h1 class="h3 mb-3 fw-normal">Please login</h1>

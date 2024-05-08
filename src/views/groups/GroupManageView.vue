@@ -56,6 +56,12 @@ export default {
   <div class="container">
     <div class="startinfo">
       <div class="editable" v-if="group">
+        <BBreadcrumb>
+          <BBreadcrumbItem @click="this.$router.push({path: '/dashboard'});"> Dashboard</BBreadcrumbItem>
+          <BBreadcrumbItem @click="this.$router.push({name: 'groups'});">Groups</BBreadcrumbItem>
+          <BBreadcrumbItem @click="this.$router.push({name: 'groupsDetails'});">Details</BBreadcrumbItem>
+          <BBreadcrumbItem active>Manage</BBreadcrumbItem>
+        </BBreadcrumb>
         <h2>Manage people in {{group.name}}</h2>
         <br>
         <div v-if="group.requestedUsers && group.requestedUsers.length">

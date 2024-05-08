@@ -72,6 +72,11 @@ export default {
 
 <template>
   <div v-if="group">
+    <BBreadcrumb>
+      <BBreadcrumbItem @click="this.$router.push({path: '/dashboard'});"> Dashboard </BBreadcrumbItem>
+      <BBreadcrumbItem @click="this.$router.push({name: 'groups'});">Groups</BBreadcrumbItem>
+      <BBreadcrumbItem active>Details</BBreadcrumbItem>
+    </BBreadcrumb>
     <div class="group-details">
       <div v-if="showImage">
         <img :src="apiURL+'/files/'+image" alt="Group logo" class="group-logo">
