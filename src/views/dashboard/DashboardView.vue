@@ -1,39 +1,111 @@
 <script>
-import groupService from '@/services/groupService'; // Asegúrate de importar tu servicio
+import groupService from '@/services/groupService.js'
+import GroupSquare from "@/components/GroupSquare.vue";
+import ParliamentSquare from "@/components/ParliamentSquare.vue";
+import userService from "@/services/userService.js";
+import parliamentService from "@/services/parliamentService.js";
 
 export default {
+  name: 'DashboardView',
   data() {
     return {
-      username: this.$store.state.username,
-      groupName: '', // Añade esto
-      groupService: null // Añade esto
+      groupService: null,
+      group: {},
+      parliament: {},
+      user: null,
     };
   },
-  created(){
-    this.groupService = new groupService();
+  components: {
+    GroupSquare,
+    ParliamentSquare,
+  },
+  computed: {
+    username() {
+      return this.$store.state.username;
+    },
+    email() {
+      return this.$store.state.email;
+    },
+    name() {
+      return this.$store.state.name;
+    },
   },
   methods: {
-    getGroups(){
-      this.groupService.getGroups().then(data => {
-        this.groupName = data;
-      })
-    }
+    async fetchUser() {
+      try {
+        const userId = await this.$store.state.userid;
+        if (!userId) {
+          throw new Error('User ID is not set');
+        }
+        const user = await userService.getUser(userId);
+        this.user = user;
+      } catch (error) {
+        console.log('Failed to fetch user');
+      }
+    },
+    async fetchGroup() {
+      try {
+        if(this.user){
+          const group = await groupService.getGroup(this.user.parliamentaryGroup);
+          this.group = group;
+          this.$store.commit('setGroupId', group._id);
+          this.$store.commit('setParliamentId', group.parliament);
+        } else {
+          this.group = {name: "No group associated", description: "Associate first a group here to see the content."};
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async fetchParliament() {
+      try {
+        if(this.user){
+          const parliament = await parliamentService.getParliament(this.$store.state.parliamentId);
+          this.parliament = parliament;
+        } else {
+          if(this.$store.state.userRole === 'admin' && this.user.isAdminOf){
+            const parliament = await parliamentService.getParliament(this.user.isAdminOf);
+            this.parliament = parliament;
+            this.$store.commit('setParliamentId', this.parliament._id);
+          } else {
+            this.parliament = {name: "No parliament associated", description: "Create a parliament to start working with it."};
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   mounted() {
-    this.getGroups();
-    
-  }
+    this.fetchUser().then(() => {
+      this.fetchGroup().then(() => {
+        this.fetchParliament();
+      });
+    });
+  },
 };
 </script>
 
 <template>
-  <h1>Dashboard</h1>
-  <p>Dashboard content goes here</p>
-  {{ username }}
+  <div class="container">
+    <h1>Welcome back, {{ name }}</h1>
+    <div v-if="user">
+      {{user.description}}
+    </div>
+    <p>Dashboard content goes here for {{ username }} - {{ email }}</p>
+    <ParliamentSquare :parliament="parliament" />
+    <br>
+    <GroupSquare :group="group" />
+    <br>
+    <div v-if="user">
+      {{user.name}} {{user.parliamentaryGroup}} {{user.email}} {{user.username}}
+    </div>
 
- <div v-for="group in groupName">{{  group.name }}</div>
+  </div>
 </template>
 
 <style scoped>
-
+.container {
+  width: 100%;
+}
 </style>
