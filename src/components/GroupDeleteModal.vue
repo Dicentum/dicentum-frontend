@@ -1,5 +1,4 @@
 <script>
-import userService from "@/services/userService.js";
 import { useToast } from 'vue-toastification';
 import groupService from "@/services/groupService.js";
 
