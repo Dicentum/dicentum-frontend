@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import authService from '@/services/authService.js';
 import { useToast } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
+import DOMPurify from 'dompurify';
 
 export default {
   name: 'RegisterView',
@@ -34,7 +35,11 @@ export default {
 
     const termsAccepted = ref(false);
 
-    const termsAndConditions = ref(''); // Initialize empty string
+    const termsAndConditions = ref('');
+
+    const sanitizedTermsAndConditions = computed(() => {
+      return DOMPurify.sanitize(termsAndConditions.value);
+    });
 
     const fetchTermsAndConditions = async () => {
       try {
@@ -92,7 +97,7 @@ export default {
       repeatPasswordTouched,
       passwordTouched,
       termsAccepted,
-      termsAndConditions,
+      sanitizedTermsAndConditions,
       isLoading,
     };
   },
@@ -166,7 +171,7 @@ export default {
           </label>
         </div>
         <BModal id="modal-terms" scrollable title="Terms and Conditions" ok-only>
-          <div v-html="termsAndConditions"></div>
+          <div v-html="sanitizedTermsAndConditions"></div>
         </BModal>
         <button class="btn btn-primary w-100 py-2" type="submit" :disabled="!termsAccepted">Submit</button>
         <p class="mt-5 mb-3 text-body-secondary">Dicentum 2024</p>

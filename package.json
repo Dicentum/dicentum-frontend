@@ -17,6 +17,7 @@
     "bootstrap-vue-next": "^0.16.6",
     "d3": "^7.9.0",
     "d3-parliament-chart": "^0.0.6",
+    "dompurify": "^3.1.2",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",
     "vue-toastification": "^2.0.0-rc.5",
