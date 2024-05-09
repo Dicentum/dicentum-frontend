@@ -133,7 +133,7 @@ export default {
               </div>
           </div>
           </transition>
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between button-submit">
             <button class="btn btn-secondary w-45 py-2" type="button" @click="cancelEdit">Cancel</button>
             <button class="btn btn-primary w-45 py-2" type="submit">Edit</button>
           </div>
@@ -155,5 +155,8 @@ export default {
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
+}
+.button-submit{
+  margin-bottom: 1rem;
 }
 </style>

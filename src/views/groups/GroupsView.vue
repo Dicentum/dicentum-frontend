@@ -82,7 +82,7 @@ export default {
         Create new group
       </button>
     </div>
-    <p>Here you can see the parliamentary groups associated with the current parliament</p>
+    <p class="introduction">Here you can see the parliamentary groups associated with the current parliament</p>
     <div class="group-container" v-if="emptyGroups.length === 0">
       <GroupSquare v-for="group in groups" :key="group.id" :group="group"/>
     </div>
@@ -104,5 +104,9 @@ export default {
   justify-content: space-between; /* Ensures elements are pushed to the far sides */
   align-items: center;
   width: 100%; /* Make sure the container spans the full width */
+}
+.introduction{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 </style>

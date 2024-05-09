@@ -132,7 +132,7 @@ export default {
             <div v-if="!debate.isClosed && Date.now() > new Date(debate.startDateVote) && Date.now() < new Date(debate.endDateVote)">
               <BButton size="lg" variant="primary" @click="toVoteDebate">Vote</BButton>
             </div>
-            <div v-else>
+            <div v-if="debate.isClosed && Date.now() > new Date(debate.endDateVote)">
               <BButton size="lg" variant="info" @click="toResults">Results</BButton>
             </div>
           </div>

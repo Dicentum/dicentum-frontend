@@ -34,7 +34,7 @@ export default {
         <p class="text-start"><strong>{{user.surname}}</strong>, {{ user.name }}</p>
         <p class="text-start">{{ user.email }}</p>
       </div>
-      <p class="text-start">{{ user.description }}</p>
+      <p class="text-start description-also">{{ user.description }}</p>
     </div>
   </div>
   <div v-else>
@@ -60,7 +60,7 @@ export default {
   background-color: #eaeaea;
   border-radius: 5px;
   box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 0.8rem;
   text-align: left;
 }
 
@@ -68,5 +68,33 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+.user-info p {
+  font-size: 1em;
+}
+
+@media only screen and (max-width: 600px) {
+  .user-info p {
+    font-size: 0.9em;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .user-info p {
+    font-size: 0.75em;
+  }
+}
+.description-also {
+  font-size: 1em;
+}
+@media only screen and (max-width: 600px) {
+  .description-also {
+    font-size: 0.9em;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .description-also {
+    font-size: 0.75em;
+  }
 }
 </style>

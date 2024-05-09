@@ -116,7 +116,7 @@ export default {
     </div>
     <div class="current-groups" v-if="callGraph && graphData">
       <h3>Current parliament:</h3>
-      <graph :data="graphData"></graph>
+      <graph :data="graphData" class="graph-parliament"></graph>
     </div>
     <div v-else>
       <BButton variant="primary" disabled>
@@ -150,5 +150,8 @@ export default {
 }
 .debate-square {
   margin-bottom: 2rem;
+}
+.graph-parliament{
+  margin-top: -5px;
 }
 </style>

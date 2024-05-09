@@ -96,11 +96,22 @@ export default {
     </div>
   </div>
   </div>
-  <div v-else>
+  <div v-if="!debate">
     <div class="loading-overlay">
       <div class="loading-box">
         <BSpinner class="spinner-loading-class"/> Loading...
       </div>
+    </div>
+  </div>
+  <div v-if="!result">
+    <BBreadcrumb>
+      <BBreadcrumbItem @click="this.$router.push({path: '/dashboard'});"> Dashboard </BBreadcrumbItem>
+      <BBreadcrumbItem @click="this.$router.push({name: 'debates'});">Debates</BBreadcrumbItem>
+      <BBreadcrumbItem @click="this.$router.push({name: 'debateDetails'});">Details</BBreadcrumbItem>
+      <BBreadcrumbItem active>Result</BBreadcrumbItem>
+    </BBreadcrumb>
+    <div class="warning-voting">
+      <p class="warning-text">⚠︎ The results of this debate are not published yet.</p>
     </div>
   </div>
 </template>
@@ -109,7 +120,7 @@ export default {
 .vote-screen {
   display: flex;
   justify-content: space-between;
-  margin-bottom: -50px;
+  margin-bottom: -30px;
 }
 .yes-votes .icon {
   color: #1a7742;
@@ -141,5 +152,19 @@ export default {
   margin-left: 10px;
   font-weight: bold;
   font-size: 1.2em;
+}
+.warning-voting{
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.warning-text{
+  margin-top: 1rem;
+  font-size: 1em;
 }
 </style>

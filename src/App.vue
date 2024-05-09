@@ -23,7 +23,9 @@ export default {
   <main class="container">
     <div class="layout_side" v-if="loggedIn">
       <div>
+        <div class="sidebar-im">
         <Sidebar />
+        </div>
         <div class="webcontent">
           <NavigationBar />
           <RouterView />
@@ -54,5 +56,14 @@ export default {
 .webcontent {
   padding-top: 80px;
   flex: 1;
+}
+
+@media (max-width: 770px) {
+  .sidebar-im {
+    display: none;
+  }
+  .layout_side {
+    margin-left: 0;
+  }
 }
 </style>

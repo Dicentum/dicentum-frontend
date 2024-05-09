@@ -68,7 +68,7 @@ export default {
         <p class="text-start">{{ user.email }}</p>
       </div>
       <div class="other-info">
-        <p class="text-start">{{ user.description }}</p>
+        <p class="text-start description-also">{{ user.description }}</p>
         <div v-if="deleteProcess">
           <BButton variant="danger" @click="deleteUser">✕ Remove</BButton>
         </div>
@@ -114,5 +114,33 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+.user-info p {
+  font-size: 1em;
+}
+
+@media only screen and (max-width: 600px) {
+  .user-info p {
+    font-size: 0.9em;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .user-info p {
+    font-size: 0.75em;
+  }
+}
+.description-also {
+  font-size: 1em;
+}
+@media only screen and (max-width: 600px) {
+  .description-also {
+    font-size: 0.9em;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .description-also {
+    font-size: 0.75em;
+  }
 }
 </style>
