@@ -1,6 +1,10 @@
 // services/debatesService.js
 import axios from 'axios';
 import authService from "@/services/authService.js";
+import {startAuthentication} from "@simplewebauthn/browser";
+import CryptoJS from 'crypto-js';
+import EncryptRsa from 'encrypt-rsa';
+import JSEncrypt from 'jsencrypt';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -56,19 +60,6 @@ const debateService = {
             throw new Error(error.response.data.message || 'Failed to delete debate');
         }
     },
-    submitVote: async (id, vote) => {
-        try {
-            const response = await axios.post(`${API_URL}/debates/${id}/vote`, vote,
-                {
-                    headers: {
-                        Authorization: `${authService.getToken()}`
-                    }
-                });
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response.data.message || 'Failed to vote');
-        }
-    },
     doTally: async (id) => {
         try {
             const response = await axios.get(`${API_URL}/debates/${id}/tally`,
@@ -94,7 +85,50 @@ const debateService = {
         } catch (error) {
             throw new Error(error.response.data.message || 'Failed to get result');
         }
-    }
+    },
+    secureSubmitVote: async (id, vote) => {
+        const encryptRsa = new EncryptRsa();
+        let crypt = new JSEncrypt();
+        try {
+            const keyResponse = await axios.get(`${API_URL}/auth/publicKey`,{
+                headers: {
+                    Authorization: `${authService.getToken()}`
+                }
+            });
+           crypt.setPublicKey(keyResponse.data.publicKey);
+
+            const response = await axios.get(`${API_URL}/auth/loginKey/start`, {
+                headers: {
+                    Authorization: `${authService.getToken()}`
+                }
+            });
+            let asseResp;
+            asseResp = await startAuthentication(response.data);
+
+            const securityVote = asseResp.id+";"+vote+";"+id;
+            let enc = crypt.encrypt(securityVote);
+            asseResp.vote = enc;
+
+            const finishResponse = await axios.post(`${API_URL}/debates/${id}/vote/secure`, asseResp, {
+                headers: {
+                    Authorization: `${authService.getToken()}`
+                }
+            });
+            return finishResponse.data;
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                throw Error('The operation was cancelled by the user');
+            } else if (error.name === 'NotAllowedError') {
+                throw Error('The operation was rejected by the user');
+            } else if (error.name === 'InvalidStateError') {
+                throw Error('Authenticator was probably already registered by user');
+            } else if (error.response) {
+                throw Error(error.response.data.message || 'Failed to register key');
+            } else {
+                throw Error(error.message || 'An error occurred');
+            }
+        }
+    },
 };
 
 export default debateService;

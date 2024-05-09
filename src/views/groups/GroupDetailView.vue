@@ -109,7 +109,7 @@ export default {
     </div>
     <div v-if="group.users && group.users.length">
       <h2>Users:</h2>
-      <PersonSquare v-for="user in group.users" :key="user" :userId="user"/>
+        <PersonSquare v-for="user in group.users" :key="user" :userId="user"/>
     </div>
   </div>
   <div v-else>
@@ -125,10 +125,11 @@ export default {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .group-info {
-  flex: 1; /* To make the group info section take remaining space */
+  flex: 1;
 }
 
 .editable {

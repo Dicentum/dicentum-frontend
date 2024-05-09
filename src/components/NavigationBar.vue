@@ -19,7 +19,8 @@ export default {
       image: null,
       avatar: null,
       showImage: false,
-      show: false
+      show: false,
+      navbarCollapsed: false
     }
   },
   computed: {
@@ -48,6 +49,7 @@ export default {
   methods: {
     closeNavbar() {
       this.$refs.navbarCollapse.classList.remove('show');
+      this.navbarCollapsed = true;
     },
     logout(){
       this.$store.dispatch('logOut');
@@ -94,6 +96,21 @@ export default {
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse" ref="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item d-md-none d-sm-block">
+            <router-link class="nav-link" :to="{name:'home'}">Home</router-link>
+          </li>
+          <li class="nav-item d-md-none d-sm-block">
+            <router-link class="nav-link" :to="{name:'dashboard'}">Dashboard</router-link>
+          </li>
+          <li class="nav-item d-md-none d-sm-block">
+            <router-link class="nav-link" :to="{name:'groups'}">Groups</router-link>
+          </li>
+          <li class="nav-item d-md-none d-sm-block">
+            <router-link class="nav-link" :to="{name:'parliament'}">Parliament</router-link>
+          </li>
+          <li class="nav-item d-md-none d-sm-block">
+            <router-link class="nav-link" :to="{name:'debates'}">Debates</router-link>
+          </li>
         </ul>
         <div v-if="loggedIn">
           <BDropdown v-model="show" end text="{{ surname }}, {{ name }}" variant="light" no-caret offset="5">

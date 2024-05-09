@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       debate: null,
+      isLoading: false
     }
   },
   methods: {
@@ -19,12 +20,15 @@ export default {
         console.error(error);
       }
     },
-    async vote(vote){
+    async secureVote(vote){
+      this.isLoading = true;
       try {
-        await debateService.submitVote(this.debate._id, {vote});
+        await debateService.secureSubmitVote(this.debate._id, vote);
+        this.isLoading = false;
         this.$toast.success('Vote emitted successfully!');
       } catch (error) {
         console.error(error);
+        this.isLoading = false;
         this.$toast.error(error.message);
       }
     }
@@ -55,13 +59,13 @@ export default {
             <p>Please vote using the buttons below:</p>
             <p class="info-text">ⓘ You will need your personal PassKey in order to emit a vote</p>
             <div class="col-4">
-              <BButton size="lg" variant="success" class="w-100" @click="vote('yes')">Yes</BButton>
+              <BButton size="lg" variant="success" class="w-100" @click="secureVote('yes')">Yes</BButton>
             </div>
             <div class="col-4">
-              <BButton size="lg" variant="warning" class="w-100" @click="vote('abstain')">Abstain</BButton>
+              <BButton size="lg" variant="warning" class="w-100" @click="secureVote('abstain')">Abstain</BButton>
             </div>
             <div class="col-4">
-              <BButton size="lg" variant="danger" class="w-100" @click="vote('no')">No</BButton>
+              <BButton size="lg" variant="danger" class="w-100" @click="secureVote('no')">No</BButton>
             </div>
         </div>
           <div v-else class="warning-voting">
@@ -70,6 +74,11 @@ export default {
       </div>
     </div>
   </div>
+  </div>
+  <div v-if="isLoading" class="loading-overlay">
+    <div class="loading-box">
+      <BSpinner class="spinner-loading-class"/> Loading...
+    </div>
   </div>
 </template>
 
