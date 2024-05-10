@@ -82,7 +82,7 @@ const authService = {
             } else if (error.name === 'InvalidStateError') {
                 throw Error('Authenticator was probably already registered by user');
             } else if (error.response) {
-                throw Error(error.response.data.message || 'Failed to register key');
+                throw Error(error.response.data.message || 'Failed to use the key');
             } else {
                 throw Error(error.message || 'An error occurred');
             }
