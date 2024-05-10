@@ -22,7 +22,7 @@ export default {
   methods:{
     async fetchParliament() {
       try {
-        if(this.$store.state.parliamentId){
+        if(this.$store.state.parliamentId !== null && this.$store.state.parliamentId !== undefined){
           const parliament = await parliamentService.getParliament(this.$store.state.parliamentId);
           this.parliament = parliament;
         } else {
@@ -57,15 +57,20 @@ export default {
     },
     async fetchGroups() {
       try {
-        let seatsAssigned = 0;
-        for (const group of this.parliament.parliamentaryGroups) {
-          const groupData = await groupService.getGroup(group);
-          this.groups.push(groupData);
-          this.graphData.push({seats: groupData.seats, color: groupData.color});
-          seatsAssigned += groupData.seats;
+        if (this.parliament.name !== "No parliament created" && this.parliament.name !== "No parliament associated") {
+          let seatsAssigned = 0;
+          for (const group of this.parliament.parliamentaryGroups) {
+            const groupData = await groupService.getGroup(group);
+            this.groups.push(groupData);
+            this.graphData.push({seats: groupData.seats, color: groupData.color});
+            seatsAssigned += groupData.seats;
+          }
+          this.graphData.push({seats: this.parliament.totalSeats - seatsAssigned, color: "#6e757c"});
+          this.callGraph = true;
+        } else {
+          this.callGraph = false;
+          console.log("No groups to show");
         }
-        this.graphData.push({seats: this.parliament.totalSeats - seatsAssigned, color: "#6e757c"});
-        this.callGraph = true;
       } catch (error) {
         console.error(error);
       }
