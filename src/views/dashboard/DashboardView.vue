@@ -45,7 +45,7 @@ export default {
     },
     async fetchGroup() {
       try {
-        if(this.user){
+        if(this.user.parliamentaryGroup !== undefined && this.user.parliamentaryGroup !== null && this.user.parliamentaryGroup !== ""){
           const group = await groupService.getGroup(this.user.parliamentaryGroup);
           this.group = group;
           this.$store.commit('setGroupId', group._id);
@@ -59,7 +59,7 @@ export default {
     },
     async fetchParliament() {
       try {
-        if(this.user){
+        if(this.group.parliament !== undefined && this.group.parliament !== null && this.group.parliament !== ""){
           const parliament = await parliamentService.getParliament(this.$store.state.parliamentId);
           this.parliament = parliament;
         } else {
