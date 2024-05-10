@@ -123,12 +123,6 @@ export default {
       <h3>Current parliament:</h3>
       <graph :data="graphData" class="graph-parliament"></graph>
     </div>
-    <div v-else>
-      <BButton variant="primary" disabled>
-        <BSpinner small type="grow" />
-        Loading...
-      </BButton>
-    </div>
     <br>
     <div class="opendebates" v-if="admin.role==='admin'">
       <h3>Debates closed:</h3>
