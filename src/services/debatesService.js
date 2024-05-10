@@ -119,6 +119,7 @@ const debateService = {
             console.log("Vote finished");
 
             console.log("Vote sent start");
+            console.log(asseResp);
             const finishResponse = await axios.post(`${API_URL}/debates/${id}/vote/secure`, asseResp, {
                 headers: {
                     Authorization: `${authService.getToken()}`
