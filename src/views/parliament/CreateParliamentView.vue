@@ -47,7 +47,7 @@ export default {
     <div class="startinfo">
       <div class="editable" v-if="parliament">
         <h2>Create the Parliament</h2>
-        <form @submit.prevent="createParliament">
+        <form @submit.prevent="createParliament" class="form-also-space">
           <div class="form-floating mb-3">
             <input type="text" class="form-control" placeholder="Name" v-model="parliament.name">
             <label for="floatingInput">Name</label>
@@ -65,7 +65,7 @@ export default {
             <label for="floatingInput">Seats</label>
           </div>
           <!-- Add the admin field here in the future -->
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between button-also-space">
             <button class="btn btn-secondary w-45 py-2" type="button" @click="cancelCreate">Cancel</button>
             <button class="btn btn-primary w-45 py-2" type="submit">Create</button>
           </div>
@@ -81,5 +81,11 @@ export default {
 <style>
 .w-45 {
   width: 45% !important;
+}
+.form-also-space {
+  margin-top: 2rem;
+}
+.button-also-space {
+  margin-bottom: 2rem;
 }
 </style>
