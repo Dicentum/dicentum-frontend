@@ -1,13 +1,14 @@
 {
   "name": "dicentum-frontend",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "dev:exposed": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "vite preview"
   },
   "dependencies": {
     "@simplewebauthn/browser": "^10.0.0",
