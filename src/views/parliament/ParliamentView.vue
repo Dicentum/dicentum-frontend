@@ -121,7 +121,7 @@ export default {
     </div>
     <div class="current-groups" v-if="callGraph && graphData">
       <h3>Current parliament:</h3>
-      <graph :data="graphData" class="graph-parliament"></graph>
+      <graph :data="graphData" :total-seats="parliament.totalSeats" class="graph-parliament"></graph>
     </div>
     <br>
     <div class="opendebates" v-if="admin.role==='admin'">
