@@ -27,27 +27,26 @@ export default {
     async submitForm() {
       try {
         const formatEndDate = (date) => {
-          // Get the local year, month, day, hours, and minutes
-          const year = date.getFullYear();
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
-          const day = date.getDate().toString().padStart(2, '0');
-          const hours = date.getHours().toString().padStart(2, '0');
-          const minutes = date.getMinutes().toString().padStart(2, '0');
+          const year = date.getUTCFullYear();
+          const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+          const day = date.getUTCDate().toString().padStart(2, '0');
+          const hours = date.getUTCHours().toString().padStart(2, '0');
+          const minutes = date.getUTCMinutes().toString().padStart(2, '0');
 
-          return `${year}-${month}-${day}T${hours}:${minutes}`;
+          return `${year}-${month}-${day}T${hours}:${minutes}:00.000Z`;
         };
 
-        const startTime = new Date(this.timer.start);
-        console.log(startTime);
-        console.log(this.timer.start);
+        const start = new Date(this.timer.start);
+        const utcNow = new Date(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), start.getUTCHours(), start.getUTCMinutes(), start.getUTCSeconds());
+        const startTime = formatEndDate(utcNow);
 
         const endTimeParts = this.endTime.split(':');
         const endDateTime = new Date(startTime);
-        endDateTime.setUTCHours(endTimeParts[0]);
+        endDateTime.setHours(endTimeParts[0]);
         endDateTime.setMinutes(endTimeParts[1]);
 
         const myTimer = {
-          start: this.timer.start+':00.000Z',
+          start: start,
           end: formatEndDate(endDateTime),
           user: this.selectedUser.id,
           debate: this.debate._id
@@ -59,7 +58,7 @@ export default {
         await this.fetchDebateData();
       } catch (error) {
         console.error(error);
-        this.$toast.error('Failed to create timer');
+        this.$toast.error(error.message);
       }
     },
     async fetchGroup(groupId) {
