@@ -45,7 +45,7 @@ export default {
   </BCardGroup>
   <hr style="border-top: 1px solid #8c8b8b;">
   <BAccordion>
-    <BAccordionItem title="What is the goal?" visible>
+    <BAccordionItem title="What is the goal?">
       Our primary goal is to facilitate these interactions through the development of a robust software system. This system will not only streamline the process of organizing debates and discussions but will also ensure the security and integrity of the voting process associated with these deliberations.
     </BAccordionItem>
     <BAccordionItem title="Can everyone use it?">
