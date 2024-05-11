@@ -91,7 +91,7 @@ export default {
             </div>
             <p>Emitted votes: <strong>{{result.emittedVotes}}</strong></p>
           </div>
-          <graph :data="data"></graph>
+          <graph :data="data" :total-seats="this.result.totalSeats"></graph>
         </div>
     </div>
   </div>
