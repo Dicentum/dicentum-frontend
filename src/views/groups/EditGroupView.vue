@@ -31,7 +31,9 @@ export default {
         try {
           const formData = new FormData();
           Object.entries(this.group).forEach(([key, value]) => {
-            formData.append(key, value);
+            if (key !== 'users' && key !== 'requestedUsers') {
+              formData.append(key, value);
+            }
           });
           if (this.file) {
             formData.append('file', this.file);

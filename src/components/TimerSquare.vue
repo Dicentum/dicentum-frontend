@@ -95,7 +95,8 @@ export default {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: false
+        hour12: false,
+        timeZone: 'UTC'
       };
       return date.toLocaleString('en-UK', options);
     },
@@ -108,7 +109,8 @@ export default {
       clearInterval(this.intervalId);
     },
     updateTimeDifference() {
-      const now = new Date();
+      let now = new Date();
+      now = new Date(now.getTime() + (2 * 60 * 60 * 1000)); // ONLY FOR THIS TIMEZONE
       if (now >= this.startDateTime && now <= this.endDateTime) {
         const diffInMilliseconds = this.endDateTime - now;
         const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
