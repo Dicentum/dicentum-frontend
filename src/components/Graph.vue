@@ -12,16 +12,32 @@ export default {
     data: {
       type: Array,
       required: true
+    },
+    totalSeats: {
+      type: Number,
     }
   },
   mounted() {
-    const svg = d3.select('svg#chart')
-        .append('g')
-        .call(
-            pc.parliamentChart()
-                .width(800)
-                .aggregatedData(this.data)
-        )
+    let svg;
+    if(this.totalSeats < 10){
+      svg = d3.select('svg#chart')
+          .append('g')
+          .call(
+              pc.parliamentChart()
+                  .width(800)
+                  .aggregatedData(this.data)
+                  .sections(1)
+                  .seatRadius(20)
+          )
+    } else {
+      svg = d3.select('svg#chart')
+          .append('g')
+          .call(
+              pc.parliamentChart()
+                  .width(800)
+                  .aggregatedData(this.data)
+          )
+    }
     svg.append('path');
   },
 };

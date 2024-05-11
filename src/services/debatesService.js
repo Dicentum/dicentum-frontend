@@ -90,30 +90,43 @@ const debateService = {
         const encryptRsa = new EncryptRsa();
         let crypt = new JSEncrypt();
         try {
+            console.log("Process started")
             const keyResponse = await axios.get(`${API_URL}/auth/publicKey`,{
                 headers: {
                     Authorization: `${authService.getToken()}`
                 }
             });
+            console.log("Key received");
+            console.log(keyResponse.data.publicKey);
            crypt.setPublicKey(keyResponse.data.publicKey);
 
+           console.log("Key set");
             const response = await axios.get(`${API_URL}/auth/loginKey/start`, {
                 headers: {
                     Authorization: `${authService.getToken()}`
                 }
             });
+            console.log("Login started");
             let asseResp;
             asseResp = await startAuthentication(response.data);
+            console.log("Login finished");
+            console.log(asseResp);
 
+            console.log("Vote started");
             const securityVote = asseResp.id+";"+vote+";"+id;
             let enc = crypt.encrypt(securityVote);
             asseResp.vote = enc;
+            console.log("Vote finished");
 
+            console.log("Vote sent start");
+            console.log(asseResp);
             const finishResponse = await axios.post(`${API_URL}/debates/${id}/vote/secure`, asseResp, {
                 headers: {
                     Authorization: `${authService.getToken()}`
                 }
             });
+            console.log("Vote sent finish");
+            console.log(finishResponse.data);
             return finishResponse.data;
         } catch (error) {
             if (error.name === 'AbortError') {
@@ -123,7 +136,7 @@ const debateService = {
             } else if (error.name === 'InvalidStateError') {
                 throw Error('Authenticator was probably already registered by user');
             } else if (error.response) {
-                throw Error(error.response.data.message || 'Failed to register key');
+                throw Error(error.response.data.message || 'Failed to use the key');
             } else {
                 throw Error(error.message || 'An error occurred');
             }

@@ -38,14 +38,16 @@ export default {
         };
 
         const startTime = new Date(this.timer.start);
-        const endTimeParts = this.endTime.split(':');
+        console.log(startTime);
+        console.log(this.timer.start);
 
+        const endTimeParts = this.endTime.split(':');
         const endDateTime = new Date(startTime);
-        endDateTime.setHours(endTimeParts[0]);
+        endDateTime.setUTCHours(endTimeParts[0]);
         endDateTime.setMinutes(endTimeParts[1]);
 
         const myTimer = {
-          start: this.timer.start,
+          start: this.timer.start+':00.000Z',
           end: formatEndDate(endDateTime),
           user: this.selectedUser.id,
           debate: this.debate._id

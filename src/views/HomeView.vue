@@ -5,73 +5,58 @@ export default {
 </script>
 
 <template>
-  <h1>Hiya!</h1>
+  <h1>Welcome to Dicentum!</h1>
   <hr style="border-top: 1px solid #8c8b8b;">
   <BCarousel controls indicators ride="carousel">
-    <BCarouselSlide img-src="https://picsum.photos/1024/256/?image=13" />
-    <BCarouselSlide img-src="https://picsum.photos/1024/256/?image=14" />
-    <BCarouselSlide img-src="https://picsum.photos/1024/256/?image=15" />
+    <BCarouselSlide img-src="https://i.imgur.com/AVsnnb8.png" />
+    <BCarouselSlide img-src="https://i.imgur.com/lFK57v2.png" />
+    <BCarouselSlide img-src="https://i.imgur.com/nnD52Ig.png" />
   </BCarousel>
   <hr style="border-top: 1px solid #8c8b8b;">
-  <p style="text-align: justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate ducimus minima repellendus tenetur. Blanditiis culpa deserunt, distinctio, doloribus enim error explicabo libero numquam officiis pariatur provident quibusdam rem sint tenetur, totam voluptatem voluptatum! Accusamus accusantium architecto, aut beatae corporis dolore ducimus eaque eligendi est expedita illum inventore iusto natus necessitatibus nemo nulla obcaecati officiis porro quasi, quisquam reprehenderit rerum saepe sapiente, ullam ut veritatis voluptates? Animi aperiam aspernatur assumenda atque beatae commodi consequuntur, eos eum eveniet expedita fugiat harum hic ipsa ipsum laborum, minima molestiae mollitia nihil non possimus provident, qui repellendus veritatis? Exercitationem, ipsum laboriosam nam nobis perferendis quibusdam?</p>
+  <p style="text-align: justify">We're thrilled to have you join us on this journey towards fostering constructive debates and discussions. At Dicentum, our mission is to provide a platform for managing groups of individuals engaged in dialogues of various natures, whether they be parliamentary sessions, community meetings, or corporate brainstorming sessions.</p>
   <hr style="border-top: 1px solid #8c8b8b;">
   <BCardGroup deck>
-    <BCard title="Title" img-src="https://picsum.photos/300/100/?image=41" img-alt="Image" img-top>
+    <BCard title="v.1.0.10 is out" img-src="https://i.imgur.com/32fS43a.png" img-alt="Image" img-top>
       <BCardText>
-        This is a wider card with supporting text below as a natural lead-in to additional content.
-        This content is a little bit longer.
+        This includes the first version of the platform, which allows users to create groups, add members, and schedule debates. It also allows to create secure votings.
       </BCardText>
       <template #footer>
-        <small class="text-body-secondary">Last updated 3 mins ago</small>
+        <small class="text-body-secondary">Last updated 11/05/2024</small>
       </template>
     </BCard>
 
-    <BCard title="Title" img-src="https://picsum.photos/300/100/?image=41" img-alt="Image" img-top>
+    <BCard title="Dicentum?" img-src="https://i.imgur.com/AdpG0lR.png" img-alt="Image" img-top>
       <BCardText>
-        This card has supporting text below as a natural lead-in to additional content.
+      Dicentum is the final project of my bachelor's degree in Computer Science. But I will continue to develop it and add new features, even after the project is finished.
       </BCardText>
       <template #footer>
-        <small class="text-body-secondary">Last updated 3 mins ago</small>
+        <small class="text-body-secondary">Last updated 01/05/2024</small>
       </template>
     </BCard>
 
-    <BCard title="Title" img-src="https://picsum.photos/300/100/?image=41" img-alt="Image" img-top>
+    <BCard title="What is a PassKey?" img-src="https://i.imgur.com/Yeto6l9.png" img-alt="Image" img-top>
       <BCardText>
-        This is a wider card with supporting text below as a natural lead-in to additional content.
-        This card has even longer content than the first to show that equal height action.
+        A passkey is a digital credential, tied to a user account and a website or application. Passkeys allow users to authenticate without having to enter any additional data. It's like magic!
       </BCardText>
       <template #footer>
-        <small class="text-body-secondary">Last updated 3 mins ago</small>
+        <small class="text-body-secondary">Last updated 12/04/2024</small>
       </template>
     </BCard>
   </BCardGroup>
   <hr style="border-top: 1px solid #8c8b8b;">
   <BAccordion>
-    <BAccordionItem title="Accordion Item #1" visible>
-      <strong>This is the first item's accordion body.</strong> It is shown by default, until the
-      collapse plugin adds the appropriate classes that we use to style each element. These classes
-      control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-      modify any of this with custom CSS or overriding our default variables. It is also worth noting
-      that just about any HTML can go within the <code>.accordion-body</code>, though the transition
-      does limit overflow.
+    <BAccordionItem title="What is the goal?" visible>
+      Our primary goal is to facilitate these interactions through the development of a robust software system. This system will not only streamline the process of organizing debates and discussions but will also ensure the security and integrity of the voting process associated with these deliberations.
     </BAccordionItem>
-    <BAccordionItem title="Accordion Item #2">
-      <strong>This is the second item's accordion body.</strong> It is hidden by default, until the
-      collapse plugin adds the appropriate classes that we use to style each element. These classes
-      control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-      modify any of this with custom CSS or overriding our default variables. It is also worth noting
-      that just about any HTML can go within the <code>.accordion-body</code>, though the transition
-      does limit overflow.
+    <BAccordionItem title="Can everyone use it?">
+      At the moment Dicentum counts with the MIT License, so you can use it for free. But remember, it's a project in development, so it may have some bugs.
     </BAccordionItem>
-    <BAccordionItem title="Accordion Item #3">
-      <strong>This is the third item's accordion body.</strong> It is hidden by default, until the
-      collapse plugin adds the appropriate classes that we use to style each element. These classes
-      control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-      modify any of this with custom CSS or overriding our default variables. It is also worth noting
-      that just about any HTML can go within the <code>.accordion-body</code>, though the transition
-      does limit overflow.
+    <BAccordionItem title="What are the technology behind?">
+      Dicentum is built with Vue.js, Node.js, Express.js, and MongoDB. It also uses BootstrapVue for the UI components.
     </BAccordionItem>
   </BAccordion>
+  <hr style="border-top: 1px solid #8c8b8b;">
+  <p>We invite you to explore our platform, engage in meaningful exchanges, and contribute to the advancement of productive discourse in your respective spheres.</p>
 </template>
 
 <style>
