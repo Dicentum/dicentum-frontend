@@ -8,7 +8,7 @@
     "dev:exposed": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
-    "serve": "vite preview"
+    "serve": "vite preview --host"
   },
   "dependencies": {
     "@simplewebauthn/browser": "^10.0.0",
