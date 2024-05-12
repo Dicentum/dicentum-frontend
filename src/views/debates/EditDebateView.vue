@@ -16,11 +16,11 @@ export default {
   methods: {
     formatDateToDateTimeLocal(dateString) {
       const date = new Date(dateString);
-      const year = date.getUTCFullYear();
-      const month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
-      const day = ('0' + date.getUTCDate()).slice(-2);
-      const hours = ('0' + date.getUTCHours()).slice(-2);
-      const minutes = ('0' + date.getUTCMinutes()).slice(-2);
+      const year = date.getFullYear();
+      const month = ('0' + (date.getMonth() + 1)).slice(-2);
+      const day = ('0' + date.getDate()).slice(-2);
+      const hours = ('0' + date.getHours()).slice(-2);
+      const minutes = ('0' + date.getMinutes()).slice(-2);
       return `${year}-${month}-${day}T${hours}:${minutes}`;
     },
     cancelEdit() {
@@ -41,21 +41,6 @@ export default {
     async editDebate() {
       try {
         if(this.condition){
-          let localDate = new Date(this.debate.date);
-          let utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate(), localDate.getHours(), localDate.getMinutes(), localDate.getSeconds()));
-          this.debate.date = utcDate.toISOString();
-
-          if (this.debate.startDateVote) {
-            localDate = new Date(this.debate.startDateVote);
-            utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate(), localDate.getHours(), localDate.getMinutes(), localDate.getSeconds()));
-            this.debate.startDateVote = utcDate.toISOString();
-          }
-          if (this.debate.endDateVote) {
-            localDate = new Date(this.debate.endDateVote);
-            utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate(), localDate.getHours(), localDate.getMinutes(), localDate.getSeconds()));
-            this.debate.endDateVote = utcDate.toISOString();
-          }
-
           await debatesService.editDebate(this.debate._id, this.debate);
           this.$router.go(-1);
           this.$toast.success('Debate edited!');

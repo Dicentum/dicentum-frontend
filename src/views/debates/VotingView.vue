@@ -68,9 +68,14 @@ export default {
               <BButton size="lg" variant="danger" class="w-100" @click="secureVote('no')">No</BButton>
             </div>
         </div>
-          <div v-else class="warning-voting">
-            <p class="warning-text">⚠︎ The voting for this debate has closed.</p>
-          </div>
+    <div v-else>
+      <div v-if="Date.now() > new Date(debate.endDateVote)" class="warning-voting">
+        <p class="warning-text">⚠︎ The voting for this debate has closed</p>
+      </div>
+      <div v-else class="warning-voting">
+        <p class="warning-text">⚠︎ The voting for this debate is not started yet</p>
+      </div>
+    </div>
       </div>
     </div>
   </div>

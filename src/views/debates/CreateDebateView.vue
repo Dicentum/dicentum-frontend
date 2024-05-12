@@ -22,20 +22,7 @@ export default {
         if(this.condition){
           this.debate.parliament = this.$store.state.parliamentId;
 
-          let localDate = new Date(this.debate.date);
-          let utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate(), localDate.getHours(), localDate.getMinutes(), localDate.getSeconds()));
-          this.debate.date = utcDate.toISOString();
 
-          if (this.debate.startDateVote) {
-            localDate = new Date(this.debate.startDateVote);
-            utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate(), localDate.getHours(), localDate.getMinutes(), localDate.getSeconds()));
-            this.debate.startDateVote = utcDate.toISOString();
-          }
-          if (this.debate.endDateVote) {
-            localDate = new Date(this.debate.endDateVote);
-            utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate(), localDate.getHours(), localDate.getMinutes(), localDate.getSeconds()));
-            this.debate.endDateVote = utcDate.toISOString();
-          }
 
           await debatesService.createDebate(this.debate);
           this.$router.go(-1);
