@@ -18,7 +18,11 @@ export default {
       debate: null,
       userRole: this.$store.state.userRole,
       onlyMyTimers: false,
-      isLoading: false
+      isLoading: false,
+      timeToVote: false,
+      timeToResults: false,
+      timeToTally: false,
+      now: null
     };
   },
   created() {
@@ -51,6 +55,14 @@ export default {
       try {
         const id = this.$route.params.id;
         this.debate = await debateService.getDebate(id);
+
+        const now = new Date();
+        const start = new Date(this.debate.startDateVote);
+        const end = new Date(this.debate.endDateVote);
+
+        this.timeToVote = now > start && new Date(now) < end && !this.debate.isClosed;
+        this.timeToResults = now > start && this.debate.isClosed;
+        this.timeToTally = now > end && !this.debate.isClosed && this.userRole == 'admin';
       } catch (error) {
         console.error(error);
       }
@@ -76,7 +88,7 @@ export default {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: false
+        hour12: false,
       };
       return date.toLocaleString('en-UK', options);
     },
@@ -111,7 +123,7 @@ export default {
           <BDropdown end text="Options" variant="secondary" class="options-dropdown">
             <BDropdownItem @click="editDebate">Edit</BDropdownItem>
             <BDropdownItem v-if="debate.type === 'presential' && userRole=='admin'" @click="manageTimers">Manage timers</BDropdownItem>
-            <BDropdownItem v-if="!debate.isClosed && userRole=='admin' && Date.now() > new Date(debate.endDateVote)" @click="tallyVotes">Tally votes</BDropdownItem>
+            <BDropdownItem v-if="timeToTally" @click="tallyVotes">Tally votes</BDropdownItem>
             <BDropdownDivider />
             <BDropdownItem @click="deleteDebate" style="color: firebrick">Delete</BDropdownItem>
           </BDropdown>
@@ -119,20 +131,20 @@ export default {
         </div>
         <h4>{{debate.description }}</h4>
         <br>
-        <h6>{{formatDate(debate.date)}}</h6>
+        <h6>{{formatDate(new Date(debate.date))}}</h6>
         <div :class="{ 'online-pill': debate.type === 'online', 'presential-pill': debate.type === 'presential' }">
           {{ debate.type.toUpperCase() }}
         </div>
         <div class="vote-container">
         <div>
-          <div v-if="debate.startDateVote"><strong>Voting opens: </strong>{{ formatDate(debate.startDateVote) }}</div>
-          <div v-if="debate.endDateVote"><strong>Voting closes: </strong>{{ formatDate(debate.endDateVote) }}</div>
+          <div v-if="debate.startDateVote"><strong>Voting opens: </strong>{{formatDate( new Date(debate.startDateVote)) }}</div>
+          <div v-if="debate.endDateVote"><strong>Voting closes: </strong>{{formatDate( new Date(debate.endDateVote) ) }}</div>
         </div>
           <div>
-            <div v-if="!debate.isClosed && Date.now() > new Date(debate.startDateVote) && Date.now() < new Date(debate.endDateVote)">
+            <div v-if="timeToVote">
               <BButton size="lg" variant="primary" @click="toVoteDebate">Vote</BButton>
             </div>
-            <div v-if="debate.isClosed && Date.now() > new Date(debate.endDateVote)">
+            <div v-if="timeToResults">
               <BButton size="lg" variant="info" @click="toResults">Results</BButton>
             </div>
           </div>

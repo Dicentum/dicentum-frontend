@@ -21,6 +21,9 @@ export default {
       try {
         if(this.condition){
           this.debate.parliament = this.$store.state.parliamentId;
+
+
+
           await debatesService.createDebate(this.debate);
           this.$router.go(-1);
           this.$toast.success('Debate created!');
