@@ -89,6 +89,10 @@ export default {
     <div v-else>
       <GroupSquare v-for="group in emptyGroups" :key="group.id" :group="group" />
     </div>
+    <div v-if="showButton" class="d-flex justify-content-between">
+      <GroupModal />
+      <GroupDeleteModal />
+    </div>
   </div>
 </template>
 

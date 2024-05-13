@@ -7,6 +7,7 @@ import EncryptRsa from 'encrypt-rsa';
 import JSEncrypt from 'jsencrypt';
 
 const API_URL = import.meta.env.VITE_API_URL;
+const AES_SECRET = import.meta.env.VITE_AES_SECRET;
 
 const debateService = {
     getDebate: async (id) => {
@@ -90,43 +91,28 @@ const debateService = {
         const encryptRsa = new EncryptRsa();
         let crypt = new JSEncrypt();
         try {
-            console.log("Process started")
             const keyResponse = await axios.get(`${API_URL}/auth/publicKey`,{
                 headers: {
                     Authorization: `${authService.getToken()}`
                 }
             });
-            console.log("Key received");
-            console.log(keyResponse.data.publicKey);
            crypt.setPublicKey(keyResponse.data.publicKey);
 
-           console.log("Key set");
             const response = await axios.get(`${API_URL}/auth/loginKey/start`, {
                 headers: {
                     Authorization: `${authService.getToken()}`
                 }
             });
-            console.log("Login started");
             let asseResp;
             asseResp = await startAuthentication(response.data);
-            console.log("Login finished");
-            console.log(asseResp);
-
-            console.log("Vote started");
             const securityVote = asseResp.id+";"+vote+";"+id;
             let enc = crypt.encrypt(securityVote);
             asseResp.vote = enc;
-            console.log("Vote finished");
-
-            console.log("Vote sent start");
-            console.log(asseResp);
             const finishResponse = await axios.post(`${API_URL}/debates/${id}/vote/secure`, asseResp, {
                 headers: {
                     Authorization: `${authService.getToken()}`
                 }
             });
-            console.log("Vote sent finish");
-            console.log(finishResponse.data);
             return finishResponse.data;
         } catch (error) {
             if (error.name === 'AbortError') {
@@ -140,6 +126,41 @@ const debateService = {
             } else {
                 throw Error(error.message || 'An error occurred');
             }
+        }
+    },
+    sendMessage: async (id, message) => {
+        try {
+            let encrypted = CryptoJS.AES.encrypt(message, AES_SECRET);
+            const secureMessage = { content: encrypted.toString() };
+
+            const response = await axios.post(`${API_URL}/debates/${id}/message`, secureMessage,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+            return response.data;
+        } catch (error) {
+            throw new Error(error.message || 'Failed to send message');
+        }
+    },
+    getMessages: async (id) => {
+        try {
+            const response = await axios.get(`${API_URL}/debates/${id}/messages`,
+                {
+                    headers: {
+                        Authorization: `${authService.getToken()}`
+                    }
+                });
+
+            for(let i = 0; i < response.data.length; i++){
+                let decrypted = CryptoJS.AES.decrypt(response.data[i].content, AES_SECRET);
+                response.data[i].content = decrypted.toString(CryptoJS.enc.Utf8);
+            }
+
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.message || 'Failed to get messages');
         }
     },
 };

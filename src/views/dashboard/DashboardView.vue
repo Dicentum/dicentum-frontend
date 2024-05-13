@@ -92,14 +92,11 @@ export default {
     <div v-if="user">
       {{user.description}}
     </div>
-    <p>Dashboard content goes here for {{ username }} - {{ email }}</p>
+    <p>Dashboard content goes here for {{ username }}</p>
     <ParliamentSquare :parliament="parliament" />
     <br>
     <GroupSquare :group="group" />
     <br>
-    <div v-if="user">
-      {{user.name}} {{user.parliamentaryGroup}} {{user.email}} {{user.username}}
-    </div>
 
   </div>
 </template>

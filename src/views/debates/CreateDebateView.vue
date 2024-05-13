@@ -75,7 +75,7 @@ export default {
           </div>
           <div class="form-floating mb-3">
             <select class="form-control" v-model="debate.type">
-              <option disabled value="online">Online</option>
+              <option value="online">Online</option>
               <option value="presential">Presential</option>
             </select>
             <label for="floatingSelect">Mode</label>

@@ -7,12 +7,13 @@ import PersonRequestSquare from "@/components/PersonRequestSquare.vue";
 import {useToast} from "vue-toastification";
 import fileService from "@/services/fileService.js";
 import debateService from "@/services/debatesService.js";
+import MessageSquare from "@/components/MessageSquare.vue";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
   name: 'DebateDetailView',
-  components: {},
+  components: {MessageSquare},
   data() {
     return {
       debate: null,
@@ -22,7 +23,9 @@ export default {
       timeToVote: false,
       timeToResults: false,
       timeToTally: false,
-      now: null
+      now: null,
+      message: '',
+      messages: [],
     };
   },
   created() {
@@ -67,6 +70,17 @@ export default {
         console.error(error);
       }
     },
+    async sendMessage() {
+      try {
+        await debateService.sendMessage(this.debate._id, this.message);
+        this.$toast.success('Message sent successfully!');
+        this.message = '';
+        await this.getMessages();
+      } catch (error) {
+        console.error(error);
+        this.$toast.error(error.message);
+      }
+    },
     async editDebate() {
       this.$router.push({name: 'editDebate'});
     },
@@ -75,6 +89,14 @@ export default {
         await debateService.deleteDebate(this.debate._id);
         this.$router.push({name: 'debates'});
         this.$toast.success('Debate deleted successfully!');
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getMessages() {
+      try {
+        const messages = await debateService.getMessages(this.$route.params.id);
+        this.messages = messages;
       } catch (error) {
         console.error(error);
       }
@@ -98,6 +120,7 @@ export default {
   },
   mounted() {
     this.$toast = useToast();
+    this.getMessages();
   }
 };
 </script>
@@ -149,7 +172,7 @@ export default {
             </div>
           </div>
         </div>
-        <div class="filters-container">
+        <div class="filters-container" v-if="debate.type === 'presential'">
           <h4>Timers: </h4>
           <div class="filters">
             <div v-if="onlyMyTimers==true">
@@ -160,7 +183,7 @@ export default {
             </div>
           </div>
           </div>
-        <div class="timers">
+        <div class="timers" v-if="debate.type === 'presential'">
           <div v-if="debate.timers && debate.timers.length">
             <div v-if="onlyMyTimers">
               <TimerSquare v-for="timer in debate.timers" :key="timer" :timer="timer" :onlyMyTimers="true" class="timer-container"/>
@@ -168,6 +191,20 @@ export default {
             <div v-else>
             <TimerSquare v-for="timer in debate.timers" :key="timer" :timer="timer" class="timer-container"/>
             </div>
+          </div>
+        </div>
+        <div class="messages-container" v-if="debate.type === 'online'">
+          <h4>Messages: </h4>
+          <div v-if="messages && messages.length" class="messages-texts">
+            <MessageSquare v-for="message in messages" :key="message" :user-id="message.user" :content="message.content" :date="message.createdAt"/>
+          </div>
+          <div class="fixed-input-group">
+            <BInputGroup>
+              <BFormInput placeholder="Type your message here" v-model="message" @keyup.enter="sendMessage"/>
+              <BInputGroupAppend>
+                <BButton variant="success" @click="sendMessage" >✉️ Send</BButton>
+              </BInputGroupAppend>
+            </BInputGroup>
           </div>
         </div>
       </div>
@@ -242,6 +279,22 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.messages-container{
+  margin-top: 2rem;
+}
+.messages-texts{
+  margin-top: 2rem;
+}
+.fixed-input-group {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: content-box;
+  background: white;
+  margin-top: -0.5rem;
+  margin-bottom: 2rem;
 }
 </style>
 
