@@ -16,9 +16,9 @@ export default {
   <p style="text-align: justify">We're thrilled to have you join us on this journey towards fostering constructive debates and discussions. At Dicentum, our mission is to provide a platform for managing groups of individuals engaged in dialogues of various natures, whether they be parliamentary sessions, community meetings, or corporate brainstorming sessions.</p>
   <hr style="border-top: 1px solid #8c8b8b;">
   <BCardGroup deck>
-    <BCard title="v.1.0.10 is out" img-src="https://i.imgur.com/32fS43a.png" img-alt="Image" img-top>
+    <BCard title="v.1.2.0 is out" img-src="https://i.imgur.com/32fS43a.png" img-alt="Image" img-top>
       <BCardText>
-        This includes the first version of the platform, which allows users to create groups, add members, and schedule debates. It also allows to create secure votings.
+        This includes the first version of the platform, plus secure voting and encrypted messages capabilities.
       </BCardText>
       <template #footer>
         <small class="text-body-secondary">Last updated 11/05/2024</small>
