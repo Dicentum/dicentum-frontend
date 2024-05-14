@@ -49,139 +49,120 @@ const router = createRouter({
     },
     {
       path:'/dashboard',
-      name:'dashboard',
-      component: DashboardView,
       meta: {
-          requiresAuth: true
-      }
-    },
-    {
-      path: '/profile',
-      name: 'profile',
-      component: ProfileView,
-        meta: {
-            requiresAuth: true
-        }
+        requiresAuth: true
+      },
+      children: [
+        {
+          path: '',
+          name: 'dashboard',
+          component: DashboardView,
+        },
+        {
+          path: 'profile',
+          name: 'profile',
+          component: ProfileView,
+        },
+      ]
     },
     {
       path: '/groups',
-      name: 'groups',
-      component: GroupsView,
       meta: {
         requiresAuth: true
-      }
-    },
-    {
-      path: '/groups/:id',
-      name: 'groupsDetails',
-      component: GroupDetailView,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/groups/:id/manage',
-      name: 'groupsManage',
-      component: GroupManageView,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/groups/create',
-      name: 'createGroup',
-      component: CreateGroupView,
-      meta: {
-        requiresAuth: true
-      }
+      },
+      children: [
+        {
+          path: '',
+          name: 'groups',
+          component: GroupsView,
+        },
+        {
+          path: ':id',
+          name: 'groupsDetails',
+          component: GroupDetailView,
+        },
+        {
+          path: ':id/manage',
+          name: 'groupsManage',
+          component: GroupManageView,
+        },
+        {
+          path: 'create',
+          name: 'createGroup',
+          component: CreateGroupView,
+        },
+        {
+          path: ':id/edit',
+          name: 'editGroup',
+          component: EditGroupView,
+        },
+      ]
     },
     {
       path: '/parliament',
-      name: 'parliament',
-      component: ParliamentView,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/parliament/create',
-      name: 'createParliament',
-      component: CreateParliamentView,
       meta: {
         requiresAuth: true
       },
-    },
-    {
-      path: '/editParliament',
-      name: 'editParliament',
-      component: EditParliamentView,
-        meta: {
-            requiresAuth: true
+      children: [
+        {
+          path: '',
+          name: 'parliament',
+          component: ParliamentView,
         },
-    },
-    {
-      path: '/groups/:id/edit',
-      name: 'editGroup',
-      component: EditGroupView,
-      meta: {
-        requiresAuth: true
-      },
-    },
-    {
-        path: '/debates',
-        name: 'debates',
-        component: DebatesView,
-            meta: {
-                requiresAuth: true
-            },
-    },
-    {
-      path: '/debates/create',
-      name: 'createDebate',
-      component: CreateDebateView,
-      meta: {
-        requiresAuth: true
-      },
-    },
-    {
-      path: '/debates/:id',
-      name: 'debateDetails',
-      component: DebateDetailView,
-      meta: {
-        requiresAuth: true
-      },
-    },
-    {
-      path: '/debates/:id/edit',
-      name: 'editDebate',
-      component: EditDebateView,
-      meta: {
-        requiresAuth: true
-      },
-    },
-    {
-      path: '/debates/:id/timers',
-      name: 'manageTimers',
-      component: ManageTimersView,
-      meta: {
-        requiresAuth: true
-      },
-    },
-    {
-      path: '/vote/:id',
-      name: 'voteDebate',
-      component: VotingView,
-      meta: {
-            requiresAuth: true
+        {
+          path: 'create',
+          name: 'createParliament',
+          component: CreateParliamentView,
         },
+        {
+          path: 'edit',
+          name: 'editParliament',
+          component: EditParliamentView,
+        },
+      ]
     },
     {
-      path: '/result/:id',
-      name: 'resultDebate',
-      component: ResultView,
+      path: '/debates',
       meta: {
         requiresAuth: true
       },
+      children: [
+        {
+          path: '',
+          name: 'debates',
+          component: DebatesView,
+        },
+        {
+          path: 'create',
+          name: 'createDebate',
+          component: CreateDebateView,
+        },
+        {
+          path: ':id',
+          name: 'debateDetails',
+          component: DebateDetailView,
+        },
+        {
+          path: ':id/edit',
+          name: 'editDebate',
+          component: EditDebateView,
+        },
+        {
+          path: ':id/timers',
+          name: 'manageTimers',
+          component: ManageTimersView,
+        },
+        {
+          path: 'vote/:id',
+          name: 'voteDebate',
+          component: VotingView,
+        },
+        {
+          path: 'result/:id',
+          name: 'resultDebate',
+          component: ResultView,
+        },
+      ]
     },
     {
       path: '/:pathMatch(.*)*',

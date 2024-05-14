@@ -96,19 +96,19 @@ export default {
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse" ref="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item d-md-none d-sm-block">
+          <li v-if="loggedIn" class="nav-item d-md-none d-sm-block">
             <router-link class="nav-link" :to="{name:'home'}">Home</router-link>
           </li>
-          <li class="nav-item d-md-none d-sm-block">
+          <li v-if="loggedIn" class="nav-item d-md-none d-sm-block">
             <router-link class="nav-link" :to="{name:'dashboard'}">Dashboard</router-link>
           </li>
-          <li class="nav-item d-md-none d-sm-block">
+          <li v-if="loggedIn" class="nav-item d-md-none d-sm-block">
             <router-link class="nav-link" :to="{name:'groups'}">Groups</router-link>
           </li>
-          <li class="nav-item d-md-none d-sm-block">
+          <li v-if="loggedIn" class="nav-item d-md-none d-sm-block">
             <router-link class="nav-link" :to="{name:'parliament'}">Parliament</router-link>
           </li>
-          <li class="nav-item d-md-none d-sm-block">
+          <li v-if="loggedIn" class="nav-item d-md-none d-sm-block">
             <router-link class="nav-link" :to="{name:'debates'}">Debates</router-link>
           </li>
         </ul>
