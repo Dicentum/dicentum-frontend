@@ -21,9 +21,9 @@ export default {
       try {
         if(this.condition){
           this.debate.parliament = this.$store.state.parliamentId;
-
-
-
+          this.debate.date = new Date(this.debate.date);
+          this.debate.startDateVote = new Date(this.debate.startDateVote);
+          this.debate.endDateVote = new Date(this.debate.endDateVote);
           await debatesService.createDebate(this.debate);
           this.$router.go(-1);
           this.$toast.success('Debate created!');

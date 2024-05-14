@@ -78,7 +78,9 @@ export default {
         await this.getMessages();
       } catch (error) {
         console.error(error);
-        this.$toast.error(error.message);
+        if(error.response.status === 400 && this.debate.isClosed){
+          this.$toast.error('This debate is closed');
+        }
       }
     },
     async editDebate() {
