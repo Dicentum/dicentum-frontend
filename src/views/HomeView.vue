@@ -1,6 +1,17 @@
 <script>
+import home1 from '@/assets/home1.png'
+import home2 from '@/assets/home2.png'
+import home3 from '@/assets/home3.png'
+
 export default {
   name: 'HomeView',
+  data() {
+    return {
+      home1: home1,
+      home2: home2,
+      home3: home3,
+    }
+  },
 }
 </script>
 
@@ -8,9 +19,9 @@ export default {
   <h1>Welcome to Dicentum!</h1>
   <hr style="border-top: 1px solid #8c8b8b;">
   <BCarousel controls indicators ride="carousel">
-    <BCarouselSlide v-lazy="'https://i.imgur.com/AVsnnb8.png'" />
-    <BCarouselSlide v-lazy="'https://i.imgur.com/lFK57v2.png'" />
-    <BCarouselSlide v-lazy="'https://i.imgur.com/nnD52Ig.png'" />
+    <BCarouselSlide :img-src="home1"  img-alt="Parlamento de Andalucía"/>
+    <BCarouselSlide :img-src="home2"  img-alt="Parlamento de Austria"/>
+    <BCarouselSlide :img-src="home3"  img-alt="Parlamento de Grecia"/>
   </BCarousel>
   <hr style="border-top: 1px solid #8c8b8b;">
   <p style="text-align: justify">We're thrilled to have you join us on this journey towards fostering constructive debates and discussions. At Dicentum, our mission is to provide a platform for managing groups of individuals engaged in dialogues of various natures, whether they be parliamentary sessions, community meetings, or corporate brainstorming sessions.</p>
