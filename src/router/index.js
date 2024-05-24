@@ -62,12 +62,7 @@ const router = createRouter({
           path: '',
           name: 'dashboard',
           component: DashboardView,
-        },
-        {
-          path: 'profile',
-          name: 'profile',
-          component: ProfileView,
-        },
+        }
       ]
     },
     {
