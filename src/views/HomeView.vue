@@ -8,9 +8,9 @@ export default {
   <h1>Welcome to Dicentum!</h1>
   <hr style="border-top: 1px solid #8c8b8b;">
   <BCarousel controls indicators ride="carousel">
-    <BCarouselSlide img-src="https://i.imgur.com/AVsnnb8.png" />
-    <BCarouselSlide img-src="https://i.imgur.com/lFK57v2.png" />
-    <BCarouselSlide img-src="https://i.imgur.com/nnD52Ig.png" />
+    <BCarouselSlide v-lazy="'https://i.imgur.com/AVsnnb8.png'" />
+    <BCarouselSlide v-lazy="'https://i.imgur.com/lFK57v2.png'" />
+    <BCarouselSlide v-lazy="'https://i.imgur.com/nnD52Ig.png'" />
   </BCarousel>
   <hr style="border-top: 1px solid #8c8b8b;">
   <p style="text-align: justify">We're thrilled to have you join us on this journey towards fostering constructive debates and discussions. At Dicentum, our mission is to provide a platform for managing groups of individuals engaged in dialogues of various natures, whether they be parliamentary sessions, community meetings, or corporate brainstorming sessions.</p>
