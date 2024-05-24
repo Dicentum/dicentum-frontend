@@ -82,7 +82,7 @@ export default {
   <div class="container">
     <div class="startinfo">
       <div class="editable" v-if="condition">
-        <h2>Edit an existent debate</h2>
+        <h2>Edit {{ debate.title }}</h2>
         <br>
         <form @submit.prevent="editDebate">
           <div class="form-floating mb-3">
