@@ -48,6 +48,11 @@ const router = createRouter({
       component: ValidateView,
     },
     {
+      path:'/profile',
+      name:'profile',
+      component: ProfileView,
+    },
+    {
       path:'/dashboard',
       meta: {
         requiresAuth: true
