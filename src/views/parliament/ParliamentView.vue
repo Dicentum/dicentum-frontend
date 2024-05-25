@@ -108,9 +108,9 @@ export default {
         </div>
       </div>
       <h4>{{parliament.description}}</h4>
-      <h6 v-if="parliament.location">Localización: <strong>{{parliament.location}}</strong></h6>
-      <p v-if="parliament.totalSeats">Escaños: <strong>{{parliament.totalSeats}}</strong></p>
-      <p v-if="parliament.admin && admin.role==='admin'">Presidente: <strong>{{admin.surname}}, {{admin.name}}</strong></p>
+      <h6 v-if="parliament.location"><strong>Location:</strong> {{parliament.location}}</h6>
+      <p v-if="parliament.totalSeats"><strong>Seats:</strong> {{parliament.totalSeats}}</p>
+      <p v-if="parliament.admin && admin.role==='admin'"><strong>President:</strong> {{admin.surname}}, {{admin.name}}</p>
       <br>
     </div>
     <div v-else class="d-flex">
