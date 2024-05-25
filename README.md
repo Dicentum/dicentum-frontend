@@ -14,6 +14,12 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 npm install
 ```
 
+Configure the enviroment:
+```
+VITE_API_URL='http://localhost:3000' # Where the backend is deployed
+VITE_AES_SECRET='' # Key for the AES cryptography method
+```
+
 ### Compile and Hot-Reload for Development
 
 ```sh
