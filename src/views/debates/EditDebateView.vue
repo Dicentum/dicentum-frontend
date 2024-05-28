@@ -94,14 +94,6 @@ export default {
             <label for="floatingTextarea2">Description</label>
           </div>
           <div class="form-floating mb-3">
-            <select class="form-control" v-model="debate.type">
-              <option disabled value="">Please select a debate mode</option>
-              <option value="online">Online</option>
-              <option value="presential">Presential</option>
-            </select>
-            <label for="floatingSelect">Mode</label>
-          </div>
-          <div class="form-floating mb-3">
             <input type="datetime-local" class="form-control" placeholder="Date" v-model="debate.date">
             <label for="floatingInput">Date</label>
           </div>

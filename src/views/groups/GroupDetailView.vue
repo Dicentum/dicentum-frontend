@@ -95,7 +95,7 @@ export default {
         </div>
         <h4>{{group.description }}</h4>
         <p class="text-start" v-if="group.seats">
-          <span>Seats: <strong>{{group.seats.toString()}}</strong></span>
+          <span><strong>Seats:</strong> {{group.seats.toString()}}</span>
         </p>
       </div>
     </div>
